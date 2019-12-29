@@ -17,11 +17,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    seq/seq.cpp \
     startwindow.cpp \
     tetromino/gamemap.cpp \
     tetromino/tetromino.cpp
 
 HEADERS += \
+    seq/seq.h \
     tetromino/IBlock.h \
     tetromino/gamemap.h \
     tetromino/tetro.h \

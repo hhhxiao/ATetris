@@ -93,11 +93,13 @@ void Tetromino::leftRotate()
 
 void Tetromino::drop()
 {
+    qDebug()<<"Qaq";
     if(moveable(MoveDirect::M_DROP)){
         ++y;
     repaint();
     }
 }
+
 
 QVector<QMap<int,int>> Tetromino::I_WALL_KICK = {
     {{ 0, 0},{-2, 0},{ 1, 0},{-2,-1},{ 1, 2}},

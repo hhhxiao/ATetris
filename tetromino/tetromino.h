@@ -43,9 +43,7 @@ public:
    bool  moveable(MoveDirect direct);
    void rigthRotate();
    void leftRotate();
-
-
-
+public slots:
    void drop();
 signals:
 

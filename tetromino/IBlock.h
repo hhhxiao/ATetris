@@ -2,6 +2,7 @@
 #define IBLOCK_H
 #include "tetromino.h"
 class IBlock:public Tetromino {
+    Q_OBJECT
 public:
     IBlock(GameMap *map,QWidget *parent):Tetromino(TetrominoType::I,map,parent){
         this->blocks = new Grid<bool>(4,4,false);

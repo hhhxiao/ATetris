@@ -5,10 +5,13 @@ StartWindow::StartWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartWindow)
 {
+
     ui->setupUi(this);
     map = new GameMap(this);
     tetro = new IBlock(map,map);
-
+    this->timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),tetro,SLOT(drop()));
+    timer->start(500);
 }
 
 StartWindow::~StartWindow()
@@ -27,7 +30,7 @@ void StartWindow::keyPressEvent(QKeyEvent *ev)
     }if(ev->key() == Qt::Key_Left){
         tetro->moveLeft();
     }if(ev->key() == Qt::Key_Down){
-        tetro->drop();
+        //tetro->drop();
     }
 
 }
