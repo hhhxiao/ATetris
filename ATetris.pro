@@ -17,9 +17,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    startwindow.cpp
+    startwindow.cpp \
+    tetromino/gamemap.cpp \
+    tetromino/tetromino.cpp
 
 HEADERS += \
+    tetromino/IBlock.h \
+    tetromino/gamemap.h \
+    tetromino/tetro.h \
+    tetromino/tetromino.h \
+    data/grid.h \
     startwindow.h
 
 FORMS += \
