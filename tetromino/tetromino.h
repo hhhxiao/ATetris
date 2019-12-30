@@ -3,46 +3,51 @@
 
 #include <QWidget>
 #include "../data/grid.h"
+#include "c.h"
 #include "gamemap.h"
 #include <QPainter>
 #include <QDebug>
-enum TetrominoType{I,T,L,J,S,Z,O};
-enum TetrominoState{ZERO,RIGHT,TWO,LEFT};
 enum MoveDirect{M_LEFT,M_RIGHT,M_DROP};
 class Tetromino : public QWidget
 {
     Q_OBJECT
+public:
+
 protected:
-    static int WIDTH;
-    const TetrominoType type;
-    static QVector<QMap<int,int>> I_WALL_KICK;
+
+    int type;
     QTimer *timer;
     bool fixed;
-    TetrominoState state = TetrominoState::ZERO;
+    int state = C::DIR_0;
     GameMap *gameMap;
     QPixmap *pixmap;
     int x = 0;
     int y = 0;
     Grid<bool> *blocks;
+
+
 public:
-    Tetromino(TetrominoType type,GameMap *map, QWidget *parent);
-   bool isFiexd(){return  fixed;}
-   void fix(){this->fixed = true;}
-   TetrominoType tpye(){return type;}
    void paintEvent(QPaintEvent *);
+
+   Tetromino(int type,GameMap *map, QWidget *parent);
+   ~Tetromino();
+   void init();
+   void fix();
+   void reset(int type);
+
+   //operator
    void moveLeft();
    void movRight();
-   //是否可旋转
-//   virtual bool rRotatable() = 0;
-//   virtual bool lRotatable() = 0;
-//   virtual bool dropable() = 0;
-//   virtual void drop() = 0;
-//   virtual int rRoate() = 0;
-//   virtual int lRotate() = 0;
-//   virtual int hardDrop() = 0;
+   void hardDrop();
    bool  moveable(MoveDirect direct);
    void rigthRotate();
    void leftRotate();
+   void debug(){
+       qDebug()<<"pos"<<x<<","<<y;
+   }
+
+
+   void setPos(int x,int y){this->x = x;this->y = y;repaint();}
 public slots:
    void drop();
 signals:

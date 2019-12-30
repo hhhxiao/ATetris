@@ -19,12 +19,13 @@ SOURCES += \
     main.cpp \
     seq/seq.cpp \
     startwindow.cpp \
+    tetromino/c.cpp \
     tetromino/gamemap.cpp \
     tetromino/tetromino.cpp
 
 HEADERS += \
     seq/seq.h \
-    tetromino/IBlock.h \
+    tetromino/c.h \
     tetromino/gamemap.h \
     tetromino/tetro.h \
     tetromino/tetromino.h \

@@ -1,6 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 #include <QVector>
+#include <functional>
 /*
  *一个网格类，采用xy坐标系
  * 其实就是把二维的QVector<QVector<T>>进行封装，防止出现坐标问题。。
@@ -37,6 +38,7 @@ public:
     void rightRotate();
     void rotation();
     void antiRotation();
+    //void each(std::function<void(T&)> f);
 };
 template<typename T>
 Grid<T>::Grid(int width, int height,T val):width(width),height(height)
@@ -90,6 +92,16 @@ void Grid<T>::antiRotation()
     transpose();
     upSideDown();
 }
+
+//template<typename T>
+//void Grid<T>::each(std::function<void (T &)> f)
+//{
+//    for(int i = 0;i<this->width;i++){
+//        for(int j = 0;j<this->width;j++){
+//            f(this[j][i]);
+//        }
+//    }
+//}
 
 template<typename T>
 T Grid<T>::get(int x, int y)const

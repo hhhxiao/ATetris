@@ -1,28 +1,109 @@
 #include "tetromino.h"
-Tetromino::Tetromino(TetrominoType type,GameMap *map,QWidget *parent)
+Tetromino::Tetromino(int type,GameMap *map,QWidget *parent)
     : QWidget(parent),type(type),gameMap(map)
 {
-    this->setFixedSize(map->getWidth(),map->getHeight());
+    this->init();
+   this->setFixedSize(map->getWidth() * C::WIDTH,map->getHeight()*C::WIDTH);
+}
+
+Tetromino::~Tetromino()
+{
+    delete  this->blocks;
+}
+
+void Tetromino::init()
+{
+    this->y = 0;
+    //I init
+    if(this->type == C::I_BLOCK){
+        this->blocks = new Grid<bool>(4,4,false);
+           this->x = 3;
+        for(int i = 0;i<4;i++)
+            blocks->set(i,1,true);
+    //o init
+    }else if(this->type == C::O_BLOCK){
+        this->x =4;
+        this->blocks = new Grid<bool>(2,2,true);
+    }else {
+        /*
+         * const int C::T_BLOCK = 2;
+            const int C::L_BLOCK = 3;
+            const int C::J_BLOCK = 4;
+            const int C::S_BLOCK = 5;
+            const int C::Z_BLOCK = 6;
+          */
+        this->blocks = new Grid<bool>(3,3,false);
+        this->x = 3;
+        blocks->set(1,1,true);
+        switch (this->type) {
+        case 2://T
+            blocks->set(1,0,true);
+            blocks->set(0,1,true);
+            blocks->set(2,1,true);
+            break;
+        case 3://L
+            blocks->set(0,1,true);
+            blocks->set(2,1,true);
+            blocks->set(0,0,true);
+            break;
+        case 4://J
+            blocks->set(0,1,true);
+            blocks->set(2,1,true);
+            blocks->set(2,0,true);
+            break;
+        case 5://S
+            blocks->set(0,1,true);
+            blocks->set(1,0,true);
+            blocks->set(2,0,true);
+            break;
+        case 6://Z
+            blocks->set(0,0,true);
+            blocks->set(1,0,true);
+            blocks->set(2,1,true);
+            break;
+        }
+    }
+
+
+}
+
+void Tetromino::fix(){
+    for(int dx = 0;dx<blocks->getWidth();dx++){
+        for(int dy = 0;dy<blocks->getHeight();dy++){
+            if(blocks->get(dx,dy)){
+                gameMap->setGird(dx+x,dy+y,this->type);
+            }
+        }
+    }
+    gameMap->update();
+    this->reset(rand()%7+1);
+}
+
+void Tetromino::reset(int type)
+{
+    this->type = type;
+    delete  this->blocks;
+    this->init();
 }
 
 void Tetromino::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     QPen pen; //画笔
-    pen.setColor(QColor(0,255, 255));
-    pen.setWidth(3);
-    QBrush brush(QColor(0, 255, 0, 125)); //画刷
+    pen.setColor(QColor(255,255, 255));
+    pen.setWidth(2);
+    QBrush brush(C::BLOCK_COLOR_LIST[this->type]); //画刷
     painter.setPen(pen); //添加画笔
-    int blockWidth = GameMap::GRID_WIDTH;
+    int blockWidth = C::WIDTH;
     painter.drawRect(x*blockWidth,y*blockWidth,
                      blocks->getWidth()*blockWidth,blocks->getHeight()*blockWidth);
     painter.setBrush(brush); //添加画刷
     for(int dx = 0;dx<blocks->getWidth();dx++){
         for(int dy = 0;dy<blocks->getHeight();dy++){
-        if(blocks->get(dx,dy))
-            painter.drawRect((x+dx)*blockWidth,
-                             (y+dy)*blockWidth,
-                             blockWidth,blockWidth);
+            if(blocks->get(dx,dy))
+                painter.drawRect((x+dx)*blockWidth,
+                                 (y+dy)*blockWidth,
+                                 blockWidth,blockWidth);
         }
     }
 }
@@ -47,6 +128,15 @@ void Tetromino::movRight()
 
 }
 
+void Tetromino::hardDrop()
+{
+    while (moveable(MoveDirect::M_DROP))
+        ++y;
+    update();
+    qDebug()<<"a hard drop";
+    fix();
+}
+
 bool Tetromino::moveable(MoveDirect direct)
 {
     int newX = this->x;
@@ -63,17 +153,17 @@ bool Tetromino::moveable(MoveDirect direct)
         break;
     default:break;
     }
-          for(int dx = 0;dx <blocks->getWidth();++dx){
-            for(int dy = 0;dy < blocks->getHeight();++dy){
-                if(blocks->get(dx,dy)){ //如果是方块才判断,空的不判断
-                    //qDebug()<<"x = "<<newX+dx<<"  y="<<newY+dy;
-                    if(gameMap->outOfRange(newX+dx,newY+dy) || !gameMap->isEmpty(newX+dx,newY+dy)){
-                        qDebug()<<"out of range";
-                        return  false;
-                    }
+    for(int dx = 0;dx <blocks->getWidth();++dx){
+        for(int dy = 0;dy < blocks->getHeight();++dy){
+            if(blocks->get(dx,dy)){ //如果是方块才判断,空的不判断
+                //qDebug()<<"x = "<<newX+dx<<"  y="<<newY+dy;
+                if(gameMap->outOfRange(newX+dx,newY+dy) || !gameMap->isEmpty(newX+dx,newY+dy)){
+                    //  qDebug()<<"out of range";
+                    return  false;
                 }
             }
-          }
+        }
+    }
     return  true;
 }
 
@@ -88,7 +178,7 @@ void Tetromino::leftRotate()
 {
     qDebug()<<"antiRotation";
     this->blocks->antiRotation();
-     repaint();
+    repaint();
 }
 
 void Tetromino::drop()
@@ -96,13 +186,6 @@ void Tetromino::drop()
     qDebug()<<"Qaq";
     if(moveable(MoveDirect::M_DROP)){
         ++y;
-    repaint();
+        repaint();
     }
 }
-
-
-QVector<QMap<int,int>> Tetromino::I_WALL_KICK = {
-    {{ 0, 0},{-2, 0},{ 1, 0},{-2,-1},{ 1, 2}},
-    {{ 0, 0},{ 2, 0},{-1, 0},{ 2, 1},{-1,-2}},
-    {{ 0, 0},{-1, 0},{ 2, 0},{-1, 2},{2 ,-1}},
-};

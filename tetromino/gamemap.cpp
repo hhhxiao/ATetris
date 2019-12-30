@@ -5,11 +5,11 @@
 GameMap::GameMap(QWidget *parent, int width, int height)
     : QWidget(parent),width(width),height(height)
 {
-     this->grids = new Grid<GRID_FILL>(width,height,GRID_FILL::EMPTY);
-    this->setFixedSize(width * GRID_WIDTH,height*GRID_WIDTH);
+     this->grids = new Grid<int>(width,height,C::EMPTY);
+    this->setFixedSize(width * C::WIDTH,height*C::WIDTH);
 }
 
-GameMap::GameMap(QWidget *parent):GameMap(parent,MAP_GRID_WIDTH,MAP_GRID_HEIGHT){}
+GameMap::GameMap(QWidget *parent):GameMap(parent,C::MAP_WIDTH,C::MAP_HEIGHT){}
 
 GameMap::~GameMap()
 {
@@ -18,16 +18,21 @@ GameMap::~GameMap()
 
 void GameMap::paintEvent(QPaintEvent *)
 {
+    qDebug()<<" repaint";
     QPainter painter(this);
-    painter.setPen(QPen());
+    QPen pen;
+    QBrush brush(Qt::SolidPattern);
     for(int x = 0;x<this->width;x++){
         for(int y = 0;y<this->height;y++){
-            painter.drawRect(x*GRID_WIDTH,y*GRID_WIDTH,GRID_WIDTH,GRID_WIDTH);
+             pen.setColor(C::BLOCK_COLOR_LIST[this->grids->get(x,y)]);
+            brush.setColor(C::BLOCK_COLOR_LIST[this->grids->get(x,y)]);
+           painter.setPen(pen);
+           painter.setBrush(brush);
+        //    if(this->grids->get(x,y) != C::EMPTY){
+            painter.drawRect(x*C::WIDTH,y*C::WIDTH,C::WIDTH,C::WIDTH);
+          //  }
+           // painter.setBrush(brush);
+
         }
     }
 }
-
-
-int GameMap::MAP_GRID_WIDTH = 10;
-int GameMap::MAP_GRID_HEIGHT = 24;
-int GameMap::GRID_WIDTH = 32;
