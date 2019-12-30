@@ -15,14 +15,17 @@ const int C::EMPTY   = 0;
 
 //tetromino  angle
 const int C::DIR_0 = 0;
-const int C::DIR_R = 1;
+const int C::DIR_L = 1;
 const int C::DIR_2 = 2;
-const int C::DIR_L = 3;
+const int C::DIR_R = 3;
 
 //map
 const int C::MAP_WIDTH = 10;
 const int C::MAP_HEIGHT = 24;
 const int C::WIDTH = 32;
+
+const int C::CLOCK_WISE = 1;
+const int C::CLOCK_ANTI_WISE = 0;
 
 
 //base color
@@ -37,3 +40,38 @@ const QMap<int,QColor> C::BLOCK_COLOR_LIST = {
     {C::GARBAGE,Qt::darkGray},
     {C::EMPTY,  QColor(40,40,40,30)}
 };
+
+
+//SRS(super rotation system) data support
+const QVector<QVector<QPoint>> C::OTHER_WALL_KICK_LIST = {
+    { QPoint( 0, 0) ,QPoint	(+1, 0)  ,QPoint(+1,+1)  ,QPoint( 0,-2) ,QPoint	(+1,-2)},//0-L(1) 逆时针
+    { QPoint( 0, 0) ,QPoint(-1, 0)	 ,QPoint(-1,+1)	 ,QPoint( 0,-2)	,QPoint(-1,-2)}, //0-R(3) 顺时针
+
+    { QPoint( 0, 0) ,QPoint	(-1, 0)	 ,QPoint(-1,-1)	 ,QPoint( 0,+2) ,QPoint	(-1,+2)},//L(1)-2 逆时针
+    { QPoint( 0, 0) ,QPoint	(-1, 0)  ,QPoint(-1,-1)	 ,QPoint( 0,+2) ,QPoint	(-1,+2)},//L(1)-0  顺时针
+
+    { QPoint( 0, 0)	,QPoint(-1, 0)	 ,QPoint(-1,+1)	 ,QPoint( 0,-2) ,QPoint	(-1,-2)},//2-R(3) 逆时针
+    { QPoint( 0, 0)	,QPoint(+1, 0)	 ,QPoint(+1,+1)	 ,QPoint( 0,-2) ,QPoint	(+1,-2)},//2-L(1) 顺时针
+
+    { QPoint( 0, 0) ,QPoint	(+1, 0)	 ,QPoint(+1,-1)  ,QPoint( 0,+2) ,QPoint	(+1,+2)},//R(3)-0 逆时针
+    { QPoint( 0, 0)	,QPoint(+1, 0)	 ,QPoint(+1,-1)  ,QPoint( 0,+2) ,QPoint	(+1,+2)} //R(3)-2顺时针
+
+
+
+};
+
+const QVector<QVector<QPoint>> C::I_WALL_KICK_LIST ={
+    {QPoint( 0, 0)	,QPoint(-1, 0)	,QPoint(+2, 0)	,QPoint(-1,+2)	,QPoint(+2,-1)},//0-
+    {QPoint( 0, 0)	,QPoint(-2, 0)	,QPoint(+1, 0)	,QPoint(-2,-1)	,QPoint(+1,+2)},//0+
+
+    {QPoint( 0, 0)	,QPoint(-2, 0)	,QPoint(+1, 0)	,QPoint(-2,-1)	,QPoint(+1,+2)},//3-
+    {QPoint( 0, 0)	,QPoint(+1, 0)	,QPoint(-2, 0)	,QPoint(+1,-2)	,QPoint(-2,+1)},//3+
+
+    {QPoint( 0, 0)	,QPoint(+1, 0)	,QPoint(-2, 0)	,QPoint(+1,-2)	,QPoint(-2,+1)},//2-
+    {QPoint( 0, 0)	,QPoint(+2, 0)	,QPoint(-1, 0)	,QPoint(+2,+1)	,QPoint(-1,-2)},//2+
+
+    {QPoint( 0, 0)	,QPoint(+2, 0)	,QPoint(-1, 0)	,QPoint(+2,+1)	,QPoint(-1,-2)},//1-
+    {QPoint( 0, 0)  ,QPoint(-1, 0)	,QPoint(+2, 0)	,QPoint(-1,+2)	,QPoint(+2,-1)}//1+
+
+};
+

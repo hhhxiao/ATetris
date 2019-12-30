@@ -13,6 +13,7 @@ Tetromino::~Tetromino()
 
 void Tetromino::init()
 {
+    this->state = C::DIR_0;
     this->y = 0;
     //I init
     if(this->type == C::I_BLOCK){
@@ -153,12 +154,89 @@ bool Tetromino::moveable(MoveDirect direct)
         break;
     default:break;
     }
-    for(int dx = 0;dx <blocks->getWidth();++dx){
-        for(int dy = 0;dy < blocks->getHeight();++dy){
-            if(blocks->get(dx,dy)){ //如果是方块才判断,空的不判断
-                //qDebug()<<"x = "<<newX+dx<<"  y="<<newY+dy;
-                if(gameMap->outOfRange(newX+dx,newY+dy) || !gameMap->isEmpty(newX+dx,newY+dy)){
-                    //  qDebug()<<"out of range";
+
+    return  valid(*blocks,newX,newY);
+//    for(int dx = 0;dx <blocks->getWidth();++dx){
+//        for(int dy = 0;dy < blocks->getHeight();++dy){
+//            if(blocks->get(dx,dy)){ //如果是方块才判断,空的不判断
+//                //qDebug()<<"x = "<<newX+dx<<"  y="<<newY+dy;
+//                if(gameMap->outOfRange(newX+dx,newY+dy) || !gameMap->isEmpty(newX+dx,newY+dy)){
+//                    //  qDebug()<<"out of range";
+//                    return  false;
+//                }
+//            }
+//        }
+//    }
+//    return  true;
+}
+
+void Tetromino::rigthRotate()
+{
+    int result = this->rotateTest(C::CLOCK_WISE);
+    if(result == -1)return;
+    QVector<QPoint> pointList = readPoint(C::CLOCK_WISE);
+    this->blocks->rotation();
+    qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
+    this->x += pointList[result].x();
+    this->y -= pointList[result].y();
+    this->state= (this->state+3)%4;
+    repaint();
+}
+
+void Tetromino::leftRotate()
+{
+    int result = this->rotateTest(C::CLOCK_ANTI_WISE);
+    if(result == -1)return;
+
+    QVector<QPoint> pointList = readPoint(C::CLOCK_ANTI_WISE);
+    this->blocks->antiRotation();
+     qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
+    this->x += pointList[result].x();
+    this->y -= pointList[result].y();
+    this->state = (this->state + 1)%4;
+    repaint();
+}
+
+int Tetromino::rotateTest(int rotationAngle)
+{
+    qDebug()<<"current state is"<<state;
+    QVector<QPoint> pointList = readPoint(rotationAngle);
+    Grid<bool> newPos = *blocks;
+    //旋转方向
+    if(rotationAngle == C::CLOCK_WISE){
+        newPos.rotation();
+    }else {
+        newPos.antiRotation();
+    }
+    for(int i = 0;i<5;i++){
+          qDebug()<<"test point is("<<pointList[i].x()<<","<<pointList[i].y()<<")";
+        if(valid(newPos,this->x + pointList[i].x(),this->y - pointList[i].y())){
+            qDebug()<<"the "<<i<<"test success";
+            return i;
+        }
+    }
+        qDebug()<<"rotate failed";
+    return  -1;
+}
+
+
+
+//读取判断列表
+QVector<QPoint> Tetromino::readPoint(int rotationAngle)
+{
+    QVector<QVector<QPoint>> table = this->type == C::I_BLOCK?
+                C::I_WALL_KICK_LIST:
+                C::OTHER_WALL_KICK_LIST;
+    return table[this->state * 2 + rotationAngle];
+}
+
+bool Tetromino::valid(Grid<bool> &grids, int posX, int posY)
+{
+    for(int dx = 0;dx <grids.getWidth();++dx){
+        for(int dy = 0;dy < grids.getHeight();++dy){
+            if(grids.get(dx,dy)){ //如果是方块才判断,空的不判断
+                if(gameMap->outOfRange(posX+dx,posY+dy) ||
+                        !gameMap->isEmpty(posX+dx,posY+dy)){
                     return  false;
                 }
             }
@@ -167,23 +245,9 @@ bool Tetromino::moveable(MoveDirect direct)
     return  true;
 }
 
-void Tetromino::rigthRotate()
-{
-    qDebug()<<"rigthRotate";
-    this->blocks->rotation();
-    repaint();
-}
-
-void Tetromino::leftRotate()
-{
-    qDebug()<<"antiRotation";
-    this->blocks->antiRotation();
-    repaint();
-}
-
 void Tetromino::drop()
 {
-    qDebug()<<"Qaq";
+
     if(moveable(MoveDirect::M_DROP)){
         ++y;
         repaint();

@@ -46,10 +46,17 @@ public:
        qDebug()<<"pos"<<x<<","<<y;
    }
 
+   int rotateTest(int rotationAngle);
+
+   QVector<QPoint> readPoint(int rotationAngle);
+
+   bool valid(Grid<bool> &grids,int x,int y);
 
    void setPos(int x,int y){this->x = x;this->y = y;repaint();}
 public slots:
    void drop();
+
+
 signals:
 
 };

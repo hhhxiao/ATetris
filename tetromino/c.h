@@ -2,6 +2,7 @@
 #define C_H
 #include <QColor>
 #include <QMap>
+#include <QPoint>
 
 class C
 {
@@ -18,13 +19,18 @@ public:
     static const int GARBAGE;
 
     static const int DIR_0;
-    static const int DIR_R;
-    static const int DIR_2;
     static const int DIR_L;
+    static const int DIR_2;
+    static const int DIR_R;
     static const int MAP_WIDTH;
     static const int MAP_HEIGHT;
+    static const int CLOCK_WISE;
+    static const int CLOCK_ANTI_WISE;
 
+    //rotate Date
     static const QMap<int,QColor> BLOCK_COLOR_LIST;
+    static const QVector<QVector<QPoint>> I_WALL_KICK_LIST;
+    static const QVector<QVector<QPoint>> OTHER_WALL_KICK_LIST;
 };
 
 

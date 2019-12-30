@@ -18,7 +18,7 @@ GameMap::~GameMap()
 
 void GameMap::paintEvent(QPaintEvent *)
 {
-    qDebug()<<" repaint";
+    //qDebug()<<" repaint";
     QPainter painter(this);
     QPen pen;
     QBrush brush(Qt::SolidPattern);
