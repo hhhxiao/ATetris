@@ -2,22 +2,31 @@
 #define SEQ_H
 #include <random>
 #include <QVector>
-class Seq
+#include <ctime>
+#include <random>
+#include <initializer_list>
+#include <deque>
+class SeqBase
 {
-public:    
-    Seq();
-    virtual QVector<int> nextBag() = 0;
-};
-
-class SevenBag :public Seq{
-private:
-    unsigned long seed;
-    QVector<int> bag;
-    void fillbag();
 public:
-    SevenBag(unsigned long s);
-    SevenBag();
-    QVector<int> nextBag()override;
+    virtual int getNext() = 0;
 };
 
+class SevenBagSeq :public SeqBase {
+    std::deque<int> bag;
+    int seed;
+public:
+    SevenBagSeq() :SevenBagSeq(time(nullptr)) {}
+    SevenBagSeq(int seed) :seed(seed) {genebag();}
+    void genebag();
+    int getNext()override;
+};
+
+class RepeatSeq :public SeqBase {
+private:
+    std::deque<int> deque;
+public:
+    RepeatSeq(const std::initializer_list<int>& list);
+    int getNext()override;
+};
 #endif // SEQ_H

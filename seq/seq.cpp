@@ -1,23 +1,41 @@
 #include "seq.h"
 
-Seq::Seq()
+void SevenBagSeq::genebag()
 {
+    static std::default_random_engine e(this->seed);
+    static std::uniform_int_distribution<int> u(0,6);
+    int arr[7];
+    for (int i = 0; i < 7; i++)
+        arr[i] = i + 1;
+    for (int i = 0; i < 7; i++) {
+        int rIndex = u(e);
+        int temp = arr[i];
+        arr[i] = arr[rIndex];
+        arr[rIndex] = temp;
+    }
+    for (int i = 0; i < 7; i++)
+        bag.push_back(arr[i]);
 }
 
-void SevenBag::fillbag(){
-    for(int i = 0;i<7;i++)
-        bag[i] = i+1;
+int SevenBagSeq::getNext()
+{
+    int next = bag.front();
+    bag.pop_front();
+    if (bag.empty())
+        genebag();
+    return next;
 }
 
-SevenBag::SevenBag(unsigned long s):Seq(),seed(s)
+RepeatSeq::RepeatSeq(const std::initializer_list<int> &list)
 {
-    for(int i = 0;i<7;i++)
-        this->bag.push_back(i+1);
+    for (auto i : list)
+        deque.push_back(i);
 }
 
-SevenBag::SevenBag():SevenBag(0){}
-QVector<int> SevenBag::nextBag()
+int RepeatSeq::getNext()
 {
-    fillbag();
-    return  this->bag;
+    int next = deque.front();
+    deque.pop_front();
+    deque.push_back(next);
+    return next;
 }

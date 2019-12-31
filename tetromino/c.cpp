@@ -27,6 +27,10 @@ const int C::WIDTH = 32;
 const int C::CLOCK_WISE = 1;
 const int C::CLOCK_ANTI_WISE = 0;
 
+const int C::SINGLE = 1;
+const int C::DOUBLE = 2;
+const int C::TRIGLE = 3;
+const int C::TETRIS = 4;
 
 //base color
 const QMap<int,QColor> C::BLOCK_COLOR_LIST = {

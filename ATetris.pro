@@ -16,23 +16,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    config/jsonmanager.cpp \
     main.cpp \
+    mainwindow.cpp \
+    mode/gamemode.cpp \
     seq/seq.cpp \
     startwindow.cpp \
     tetromino/c.cpp \
     tetromino/gamemap.cpp \
+    tetromino/linecleartype.cpp \
     tetromino/tetromino.cpp
 
 HEADERS += \
+    config/jsonmanager.h \
+    mainwindow.h \
+    mode/gamemode.h \
     seq/seq.h \
     tetromino/c.h \
     tetromino/gamemap.h \
+    tetromino/linecleartype.h \
     tetromino/tetro.h \
     tetromino/tetromino.h \
     data/grid.h \
     startwindow.h
 
 FORMS += \
+    mainwindow.ui \
     startwindow.ui
 
 # Default rules for deployment.

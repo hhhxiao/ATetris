@@ -27,6 +27,12 @@ public:
     static const int CLOCK_WISE;
     static const int CLOCK_ANTI_WISE;
 
+
+    static const int SINGLE;
+    static const int DOUBLE;
+    static const int TRIGLE;
+    static const int TETRIS;
+
     //rotate Date
     static const QMap<int,QColor> BLOCK_COLOR_LIST;
     static const QVector<QVector<QPoint>> I_WALL_KICK_LIST;

@@ -34,7 +34,6 @@ public:
    void init();
    void fix();
    void reset(int type);
-
    //operator
    void moveLeft();
    void movRight();
