@@ -35,8 +35,8 @@ const int C::TETRIS = 4;
 //base color
 const QMap<int,QColor> C::BLOCK_COLOR_LIST = {
     {C::I_BLOCK,Qt::cyan},
-    {C::J_BLOCK,Qt::blue},
-    {C::L_BLOCK,Qt::gray},
+    {C::J_BLOCK,QColor(239,121,33)},
+    {C::L_BLOCK,Qt::blue},
     {C::S_BLOCK,Qt::green},
     {C::Z_BLOCK,Qt::red},
     {C::O_BLOCK,Qt::yellow},

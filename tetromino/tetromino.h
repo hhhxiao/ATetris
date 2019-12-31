@@ -7,6 +7,7 @@
 #include "gamemap.h"
 #include <QPainter>
 #include <QDebug>
+#include <QTimer>
 enum MoveDirect{M_LEFT,M_RIGHT,M_DROP};
 class Tetromino : public QWidget
 {
@@ -16,8 +17,9 @@ public:
 protected:
 
     int type;
-    QTimer *timer;
-    bool fixed;
+    int deathDelay = 800;
+    QTimer *lifeTimer; //不动到死亡的时间
+    bool willDeath = false;
     int state = C::DIR_0;
     GameMap *gameMap;
     QPixmap *pixmap;
@@ -28,11 +30,9 @@ protected:
 
 public:
    void paintEvent(QPaintEvent *);
-
    Tetromino(int type,GameMap *map, QWidget *parent);
    ~Tetromino();
    void init();
-   void fix();
    void reset(int type);
    //operator
    void moveLeft();
@@ -45,18 +45,22 @@ public:
        qDebug()<<"pos"<<x<<","<<y;
    }
 
+   void relive(){
+       if(this->lifeTimer->isActive()){
+           qDebug()<<"关闭死亡定时器";
+            this->lifeTimer->stop();
+       }
+       this->willDeath = false;
+        qDebug()<<"又活了!!";
+   }
    int rotateTest(int rotationAngle);
-
    QVector<QPoint> readPoint(int rotationAngle);
-
    bool valid(Grid<bool> &grids,int x,int y);
-
    void setPos(int x,int y){this->x = x;this->y = y;repaint();}
 public slots:
    void drop();
-
-
+   void fix();
 signals:
-
+    void death(); //死亡信号
 };
 #endif // TETROMINO_H

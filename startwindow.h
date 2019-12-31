@@ -5,6 +5,7 @@
 #include "tetromino/tetro.h"
 #include "QKeyEvent"
 #include "./seq/seq.h"
+#include "./mode/gamemode.h"
 #include <QTimer>
 QT_BEGIN_NAMESPACE
 namespace Ui { class StartWindow; }
@@ -19,7 +20,7 @@ public:
     StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
      virtual void keyPressEvent(QKeyEvent *ev);
-    virtual void keyReleaseEvent(QKeyEvent *ev);
+   // virtual void keyReleaseEvent(QKeyEvent *ev);
 public slots:
     //开始重复运动
     void repeatRightMove(){
@@ -36,8 +37,6 @@ public slots:
         lastTime = 3;
         arrTimer->start(ARR);
     }
-
-
     void geneNewTetro();
 
 private:
@@ -48,5 +47,6 @@ private:
     QTimer *dasTimer;
     QTimer *arrTimer;
     int lastTime = 0;
+    GameMode mode;
 };
 #endif // STARTWINDOW_H

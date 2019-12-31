@@ -5,16 +5,25 @@
 #include "../tetromino/tetro.h"
 class GameMode
 {
-public:
+    private:
     QString id;
     QString discription;
     QString name;
-    Seq *sequence;
+    SeqBase *sequence;
     bool gravity = true;
     QSet<LineClearType> filters;
     bool cheatEnale = false;
     int taskNum = 40;
+public:
     GameMode();
+    int getNextTetro(){
+        return this->sequence->getNext();
+    }
+
+    bool getGravity(){
+        return gravity;
+    }
 };
+
 
 #endif // GAMEMODE_H

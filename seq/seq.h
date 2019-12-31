@@ -13,12 +13,13 @@ public:
 };
 
 class SevenBagSeq :public SeqBase {
+private:
     std::deque<int> bag;
     int seed;
+    void genebag();
 public:
     SevenBagSeq() :SevenBagSeq(time(nullptr)) {}
     SevenBagSeq(int seed) :seed(seed) {genebag();}
-    void genebag();
     int getNext()override;
 };
 

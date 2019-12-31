@@ -2,5 +2,5 @@
 
 GameMode::GameMode()
 {    
-    this->sequence = new SevenBag(time(NULL));
+    this->sequence = new SevenBagSeq();
 }

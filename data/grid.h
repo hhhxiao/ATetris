@@ -38,7 +38,7 @@ public:
     void rightRotate();
     void rotation();
     void antiRotation();
-    //void each(std::function<void(T&)> f);
+    void each(std::function<void(int,int,T&)> f);
 };
 template<typename T>
 Grid<T>::Grid(int width, int height,T val):width(width),height(height)
@@ -91,6 +91,16 @@ void Grid<T>::antiRotation()
 {
     transpose();
     upSideDown();
+}
+
+template<typename T>
+void Grid<T>::each(std::function<void (int, int, T &)> f)
+{
+    for(int i = 0;i<this->width;i++){
+         for(int j = 0;j<this->height;j++){
+             f(i,j,data[j][i]);
+         }
+    }
 }
 
 //template<typename T>

@@ -8,16 +8,17 @@ StartWindow::StartWindow(QWidget *parent)
 
     ui->setupUi(this);
     map = new GameMap(this);
-    tetro = new Tetromino(C::T_BLOCK,map,map);
+    tetro = new Tetromino(this->mode.getNextTetro(),map,map);
+    connect(tetro,SIGNAL(death()),this,SLOT(geneNewTetro()));
     this->timer = new QTimer(this);
     dasTimer=  new QTimer(this);
     dasTimer->setSingleShot(true);
     arrTimer =  new QTimer(this);
-    connect(dasTimer,SIGNAL(timeout()),this,SLOT(startArr()));
-    //connect(timer,SIGNAL(timeout()),tetro,SLOT(drop()));
+   // connect(dasTimer,SIGNAL(timeout()),this,SLOT(startArr()));
+    connect(timer,SIGNAL(timeout()),tetro,SLOT(drop()));
     connect(arrTimer,SIGNAL(timeout()),this,SLOT(repeatRightMove()));
-    //timer->start(500);
-
+    if(mode.getGravity())
+        timer->start(800);
     this->setFixedSize(C::WIDTH*C::MAP_WIDTH+10,C::WIDTH*C::MAP_HEIGHT+10);
 }
 
@@ -50,24 +51,20 @@ void StartWindow::keyPressEvent(QKeyEvent *ev)
         //硬降下
         tetro->hardDrop();
        // tetro->setPos(3,0);
-       // geneNewTetro();
-
-    }if(ev->key() == Qt::Key_Enter){
-    this->map->repaint();
+        geneNewTetro();
     }
 }
 
-void StartWindow::keyReleaseEvent(QKeyEvent *ev)
-{
-    if(ev->key() == Qt::Key_Right){
-    }
+//void StartWindow::keyReleaseEvent(QKeyEvent *ev)
+//{
+//    if(ev->key() == Qt::Key_Right){
+//    }
 
-}
+//}
 
 void StartWindow::geneNewTetro()
 {
-    this->tetro->reset(rand()%7+1);
-   // this->tetro->update();
+    this->tetro->reset(this->mode.getNextTetro());
 }
 
 
