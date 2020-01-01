@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     config/jsonmanager.cpp \
+    config/keypressmanager.cpp \
     main.cpp \
     mainwindow.cpp \
     mode/gamemode.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 
 HEADERS += \
     config/jsonmanager.h \
+    config/keypressmanager.h \
     mainwindow.h \
     mode/gamemode.h \
     seq/seq.h \
