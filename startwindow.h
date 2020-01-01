@@ -23,7 +23,6 @@ public:
     Tetromino* geteTetro();
 public slots:
     void geneNewTetro();
-
 private:
     Ui::StartWindow *ui;
     GameMap *map;

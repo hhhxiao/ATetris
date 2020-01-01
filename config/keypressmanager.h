@@ -2,10 +2,14 @@
 #define KEYPRESSMANAGER_H
 
 #include <QKeyEvent>
+#include <QTimer>
+#include <QWidget>
 
 class StartWindow;
-class KeyPressManager
+enum ArrEventType{MOVE_LEFT,MOVE_RIGHT};
+class KeyPressManager: public QObject
 {
+    Q_OBJECT
 private:
     StartWindow *widow;
     int hardDrop = Qt::Key_Space;
@@ -14,13 +18,20 @@ private:
     int drop = Qt::Key_Down;
     int leftRotate = Qt::Key_Z;
     int rightRotate = Qt::Key_X;
-public:
+    ArrEventType eventType = MOVE_LEFT;
 
+   QTimer *dasTimer,*arrTimer;
+public:
+    static const int DAS;
+    static const int ARR;
     void setWindow(StartWindow *window);
     KeyPressManager(StartWindow *window);
     KeyPressManager();
     void keyPressHandler(QKeyEvent *ev);
     void keyReleaseHanler(QKeyEvent *ev);
+public slots:
+    void arrEvent();
+    void startArrTimer();
 };
 
 #endif // KEYPRESSMANAGER_H

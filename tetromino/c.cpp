@@ -21,7 +21,7 @@ const int C::DIR_R = 3;
 
 //map
 const int C::MAP_WIDTH = 10;
-const int C::MAP_HEIGHT = 24;
+const int C::MAP_HEIGHT = 20;
 const int C::WIDTH = 32;
 
 const int C::CLOCK_WISE = 1;

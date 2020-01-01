@@ -47,11 +47,11 @@ public:
 
    void relive(){
        if(this->lifeTimer->isActive()){
-           qDebug()<<"关闭死亡定时器";
+          // qDebug()<<"关闭死亡定时器";
             this->lifeTimer->stop();
        }
        this->willDeath = false;
-        qDebug()<<"又活了!!";
+        //qDebug()<<"又活了!!";
    }
    int rotateTest(int rotationAngle);
    QVector<QPoint> readPoint(int rotationAngle);

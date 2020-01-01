@@ -168,7 +168,7 @@ void Tetromino::rigthRotate()
     relive();
     QVector<QPoint> pointList = readPoint(C::CLOCK_WISE);
     this->blocks->rotation();
-    qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
+   // qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
     this->x += pointList[result].x();
     this->y -= pointList[result].y();
     this->state= (this->state+3)%4;
@@ -183,7 +183,7 @@ void Tetromino::leftRotate()
     relive();
     QVector<QPoint> pointList = readPoint(C::CLOCK_ANTI_WISE);
     this->blocks->antiRotation();
-    qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
+  //  qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
     this->x += pointList[result].x();
     this->y -= pointList[result].y();
     this->state = (this->state + 1)%4;
@@ -247,7 +247,7 @@ void Tetromino::drop()
         repaint();
     }else{
         if(!willDeath){
-            qDebug()<<"要死了QAQ";
+            //qDebug()<<"要死了QAQ";
             this->lifeTimer->start(deathDelay);
             this->willDeath = true;
         }
