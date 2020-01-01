@@ -20,10 +20,13 @@ void SevenBagSeq::genebag()
 int SevenBagSeq::getNext()
 {
     int next = bag.front();
+   // qDebug()<<"[Seg bag generatorx]  next is "<<next;
     bag.pop_front();
-    if (bag.empty())
+    if (bag.empty()){
+      //  qDebug()<<"bag is empty!";
         genebag();
-    return next;
+    }
+       return next;
 }
 
 RepeatSeq::RepeatSeq(const std::initializer_list<int> &list)

@@ -26,7 +26,8 @@ SOURCES += \
     tetromino/c.cpp \
     tetromino/gamemap.cpp \
     tetromino/linecleartype.cpp \
-    tetromino/tetromino.cpp
+    tetromino/tetromino.cpp \
+    widget/nextwidnow.cpp
 
 HEADERS += \
     config/jsonmanager.h \
@@ -40,7 +41,8 @@ HEADERS += \
     tetromino/tetro.h \
     tetromino/tetromino.h \
     data/grid.h \
-    startwindow.h
+    startwindow.h \
+    widget/nextwidnow.h
 
 FORMS += \
     mainwindow.ui \

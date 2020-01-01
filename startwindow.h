@@ -7,7 +7,10 @@
 #include "./seq/seq.h"
 #include "./mode/gamemode.h"
 #include "./config/keypressmanager.h"
+#include "./widget/nextwidnow.h"
 #include <QTimer>
+#include <QSet>
+#include <QVector>
 QT_BEGIN_NAMESPACE
 namespace Ui { class StartWindow; }
 QT_END_NAMESPACE
@@ -21,6 +24,8 @@ public:
     virtual void keyPressEvent(QKeyEvent *ev);
     virtual void keyReleaseEvent(QKeyEvent *ev);
     Tetromino* geteTetro();
+    GameMap *getMap();
+    bool cheatEnable(){return  this->mode.cheatEnable();}
 public slots:
     void geneNewTetro();
 private:
@@ -30,5 +35,7 @@ private:
     QTimer *timer;
     GameMode mode;
     KeyPressManager *keyManager;
+    QVector<NextWidnow*> nextWindows;
+
 };
 #endif // STARTWINDOW_H

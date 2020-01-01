@@ -16,27 +16,24 @@ Tetromino::~Tetromino()
 }
 
 
-//根据方块的类型重置方块
-void Tetromino::init()
+
+Grid<bool>* Tetromino::createBlocks( int type,int &x)
 {
-    this->state = C::DIR_0;
-    this->y = 0;
-    this->willDeath = false;
-    //I init
-    if(this->type == C::I_BLOCK){
-        this->blocks = new Grid<bool>(4,4,false);
-        this->x = 3;
+    Grid<bool>*  blocks;
+    if(type == C::I_BLOCK){
+        blocks = new Grid<bool>(4,4,false);
         for(int i = 0;i<4;i++)
             blocks->set(i,1,true);
+        x = 2;
         //o init
-    }else if(this->type == C::O_BLOCK){
-        this->x =4;
-        this->blocks = new Grid<bool>(2,2,true);
+    }else if(type == C::O_BLOCK){
+        blocks = new Grid<bool>(2,2,true);
+        x = 4;
     }else {
-        this->blocks = new Grid<bool>(3,3,false);
-        this->x = 3;
+        blocks = new Grid<bool>(3,3,false);
         blocks->set(1,1,true);
-        switch (this->type) {
+        x = 3;
+        switch (type) {
         case 2://T
             blocks->set(1,0,true);
             blocks->set(0,1,true);
@@ -64,8 +61,17 @@ void Tetromino::init()
             break;
         }
     }
+    return  blocks;
+}
 
 
+//根据方块的类型重置方块
+void Tetromino::init()
+{
+    this->state = C::DIR_0;
+    this->y = 0;
+    this->willDeath = false;
+    this->blocks = createBlocks(this->type,this->x);
 }
 
 //处死当前方块
@@ -75,7 +81,7 @@ void Tetromino::fix(){
             gameMap->setGird(dx+x,dy+y,this->type);
     });
     gameMap->update();
-    qDebug()<<"death!!!";
+    //qDebug()<<"death!!!";
     emit death();
 }
 
@@ -91,23 +97,30 @@ void Tetromino::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     QPen pen; //画笔
-    pen.setColor(QColor(255,255, 255));
+    pen.setColor(C::BLOCK_COLOR_LIST[this->type]);
     pen.setWidth(2);
     QBrush brush(C::BLOCK_COLOR_LIST[this->type]); //画刷
     painter.setPen(pen); //添加画笔
-    painter.drawRect(x*C::WIDTH,y*C::WIDTH,blocks->getWidth()*C::WIDTH,blocks->getHeight()*C::WIDTH);
-    painter.setBrush(brush); //添加画刷
+  //  painter.drawRect(x*C::WIDTH,y*C::WIDTH,blocks->getWidth()*C::WIDTH,blocks->getHeight()*C::WIDTH);
 
+    int ghostY = getGhostY();
+    blocks->each([ghostY,&painter,this](int dx,int dy,bool value){
+        if(value)
+            painter.drawRect((x+dx)*C::WIDTH,(ghostY+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
+
+    });
+    painter.setBrush(brush); //添加画刷
     blocks->each([&painter,this](int dx,int dy,bool value){
         if(value)
             painter.drawRect((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
+
     });
 }
 
 //左移
 void Tetromino::moveLeft()
 {
-    if(moveable(MoveDirect::M_LEFT)){
+    if(positionValid(*gameMap,*blocks,x-1,y)){
         relive();
         --x;
         repaint();
@@ -118,7 +131,7 @@ void Tetromino::moveLeft()
 //右移
 void Tetromino::movRight()
 {
-    if(moveable(MoveDirect::M_RIGHT))
+    if(positionValid(*gameMap,*blocks,x+1,y))
     {
         relive();
         ++x;
@@ -127,50 +140,24 @@ void Tetromino::movRight()
 }
 
 //硬降
-void Tetromino::hardDrop()
-{
-    while (moveable(MoveDirect::M_DROP))
-    {
+void Tetromino::hardDrop(){
+    while(positionValid(*gameMap,*blocks,x,y+1))
         ++y;
-    }
     update();
-    qDebug()<<"a hard drop";
     fix();
 }
-
-//是否可以移动
-bool Tetromino::moveable(MoveDirect direct)
-{
-    int newX = this->x;
-    int newY = this->y;
-    switch (direct) {
-    case MoveDirect::M_LEFT:
-        --newX;
-        break;
-    case MoveDirect::M_RIGHT:
-        ++newX;
-        break;
-    case MoveDirect::M_DROP:
-        ++newY;
-        break;
-    default:break;
-    }
-    return  valid(*blocks,newX,newY);
-}
-
 
 //右旋
 void Tetromino::rigthRotate()
 {
-    int result = this->rotateTest(C::CLOCK_WISE);
-    if(result == -1)return;
-
+    //获取旋转测试结果
+    auto pair = this->rotateTest(C::CLOCK_WISE);
+    if(pair.first == -1)return;//没转成功就直接返回
     relive();
-    QVector<QPoint> pointList = readPoint(C::CLOCK_WISE);
+    tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
     this->blocks->rotation();
-   // qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
-    this->x += pointList[result].x();
-    this->y -= pointList[result].y();
+    this->x += pair.second.x();
+    this->y -= pair.second.y();
     this->state= (this->state+3)%4;
     repaint();
 }
@@ -178,22 +165,59 @@ void Tetromino::rigthRotate()
 //左旋
 void Tetromino::leftRotate()
 {
-    int result = this->rotateTest(C::CLOCK_ANTI_WISE);
-    if(result == -1)return;
+
+    auto pair = this->rotateTest(C::CLOCK_ANTI_WISE);
+    if(pair.first == -1)return;
     relive();
-    QVector<QPoint> pointList = readPoint(C::CLOCK_ANTI_WISE);
+     tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
     this->blocks->antiRotation();
-  //  qDebug()<<"right offset is : ("<<pointList[result].x()<<","<<pointList[result].y()<<")";
-    this->x += pointList[result].x();
-    this->y -= pointList[result].y();
+    this->x += pair.second.x();
+    this->y -= pair.second.y();
     this->state = (this->state + 1)%4;
-    repaint();
+     repaint();
 }
 
-//SRS 5个offset 分别测试
-int Tetromino::rotateTest(int rotationAngle)
+int Tetromino::getGhostY()
 {
-    qDebug()<<"current state is"<<state;
+    int pos = y;
+    while(positionValid(*gameMap,*blocks,x,pos+1))
+        ++pos;
+    return pos;
+}
+
+void Tetromino::tspinCheck(int num, const QPoint &p, int dir)
+{
+    if(this->type != C::T_BLOCK)return;
+    if(num == 1){
+        qDebug()<<"Tspin mini";
+        return;
+    }
+    Grid<bool> testBlcok = *this->blocks;
+    if(dir == C::CLOCK_WISE){
+        testBlcok.rotation();
+    }else {
+        testBlcok.antiRotation();
+    }
+    int dx[4] = {1,-1,0,0};
+    int dy[4] = {0,0,1,-1};
+    int result = 0;
+    for(int i = 0;i<4;i++){
+        if(positionValid(*gameMap,testBlcok,
+                         this->x+dx[i]+p.x(),
+                         this->y+dy[i]-p.y()
+                         ))
+            result++;
+    }
+    if(result == 0){
+        qDebug()<<"tspin!!!";
+    }
+    return;
+}
+
+//SRS 5个offset位置分别测试
+QPair<int,QPoint> Tetromino::rotateTest(int rotationAngle)
+{
+    //  qDebug()<<"current state is"<<state;
     QVector<QPoint> pointList = readPoint(rotationAngle);
     Grid<bool> newPos = *blocks;
     //旋转方向
@@ -203,14 +227,11 @@ int Tetromino::rotateTest(int rotationAngle)
         newPos.antiRotation();
     }
     for(int i = 0;i<5;i++){
-        //qDebug()<<"test point is("<<pointList[i].x()<<","<<pointList[i].y()<<")";
-        if(valid(newPos,this->x + pointList[i].x(),this->y - pointList[i].y())){
-            //qDebug()<<"the "<<i<<"test success";
-            return i;
+        if(positionValid(*this->gameMap,newPos,this->x + pointList[i].x(),this->y - pointList[i].y())){
+            return {i,pointList[i]};
         }
     }
-    //qDebug()<<"rotate failed";
-    return  -1;
+    return  {-1,QPoint(-100,-100)};
 }
 
 
@@ -224,24 +245,12 @@ QVector<QPoint> Tetromino::readPoint(int rotationAngle)
     return table[this->state * 2 + rotationAngle];
 }
 
-//判断当前位置在地图中是否为合法位置
-bool Tetromino::valid(Grid<bool> &grids, int posX, int posY)
-{
-    bool result = true;
-    grids.each([&result,posX,posY,this](int x,int y,bool value){
-        if(value){ //如果是方块才判断,空的不判断
-            if(gameMap->outOfRange(posX+x,posY+y) ||!gameMap->isEmpty(posX+x,posY+y)){
-                result = false;
-                return;
-            }
-        }
-    });
-    return  result;
-}
+
+
 
 void Tetromino::drop()
 {
-    if(moveable(MoveDirect::M_DROP))
+    if(positionValid(*gameMap,*blocks,x,y+1))
     {
         ++y;
         repaint();
@@ -253,3 +262,23 @@ void Tetromino::drop()
         }
     }
 }
+
+//判断某个位置在地图中是否为合法位置
+bool Tetromino::positionValid(const GameMap &map, Grid<bool> &grids,int x,int y)
+{
+    bool result = true;
+    grids.each([&result,&x,&y,&map](int dx,int dy,bool value){
+        if(value){
+            if(value){ //如果是方块才判断,空的不判断
+                if(map.outOfRange(dx+x,dy+y) ||!map.isEmpty(dx+x,dy+y)){
+                    result = false;
+                    return;
+                }}
+
+        }
+    });
+    return result;
+}
+
+
+

@@ -8,7 +8,8 @@
 #include <QPainter>
 #include <QDebug>
 #include <QTimer>
-enum MoveDirect{M_LEFT,M_RIGHT,M_DROP};
+#include <QPair>
+enum MoveDirect{M_LEFT,M_RIGHT,M_DROP,M_UP};
 class Tetromino : public QWidget
 {
     Q_OBJECT
@@ -29,37 +30,40 @@ protected:
 
 
 public:
-   void paintEvent(QPaintEvent *);
-   Tetromino(int type,GameMap *map, QWidget *parent);
-   ~Tetromino();
-   void init();
-   void reset(int type);
-   //operator
-   void moveLeft();
-   void movRight();
-   void hardDrop();
-   bool  moveable(MoveDirect direct);
-   void rigthRotate();
-   void leftRotate();
-   void debug(){
-       qDebug()<<"pos"<<x<<","<<y;
-   }
+    void paintEvent(QPaintEvent *);
 
-   void relive(){
-       if(this->lifeTimer->isActive()){
-          // qDebug()<<"关闭死亡定时器";
+    //constructor
+    Tetromino(int type,GameMap *map, QWidget *parent);
+    ~Tetromino();
+    void init();
+    void reset(int type);
+    //operator
+    void moveLeft();
+    void movRight();
+    void hardDrop();
+ //   bool  moveable(MoveDirect direct);
+    void rigthRotate();
+    void leftRotate();
+    void relive(){
+        if(this->lifeTimer->isActive())
+            // qDebug()<<"关闭死亡定时器";
             this->lifeTimer->stop();
-       }
-       this->willDeath = false;
+        this->willDeath = false;
         //qDebug()<<"又活了!!";
-   }
-   int rotateTest(int rotationAngle);
-   QVector<QPoint> readPoint(int rotationAngle);
-   bool valid(Grid<bool> &grids,int x,int y);
-   void setPos(int x,int y){this->x = x;this->y = y;repaint();}
+    }
+
+    int getGhostY();
+    void tspinCheck(int num,const QPoint &p,int dir);
+    QPair<int,QPoint> rotateTest(int rotationAngle);
+    QVector<QPoint> readPoint(int rotationAngle);
+    void setPos(int x,int y){this->x = x;this->y = y;repaint();}
+    //static functions
+    static Grid<bool>* createBlocks(int type,int &x);
+    static bool positionValid(const GameMap &map, Grid<bool> &grids,int x,int y);
+
 public slots:
-   void drop();
-   void fix();
+    void drop();
+    void fix();
 signals:
     void death(); //死亡信号
 };

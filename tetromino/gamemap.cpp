@@ -10,6 +10,18 @@ GameMap::GameMap(QWidget *parent, int width, int height)
 }
 
 GameMap::GameMap(QWidget *parent):GameMap(parent,C::MAP_WIDTH,C::MAP_HEIGHT){}
+
+void GameMap::clearLine()
+{
+    this->grids->deleteLine([](const QVector<int> &vector){
+        for(auto i :vector){
+            if(i == C::EMPTY)
+                return  false;
+        }
+        return true;
+    },C::EMPTY);
+    this->repaint();
+}
 GameMap::~GameMap(){delete grids;}
 
 

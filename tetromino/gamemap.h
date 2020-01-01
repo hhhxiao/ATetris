@@ -20,9 +20,11 @@ public:
     int getHeight(){return  height;}
     int getWidth(){return  width;}
 
-    bool outOfRange(int x,int y){return  x<0 || x>=width || y <0 || y>=height;}
-    bool isEmpty(int x,int y){return grids->get(x,y) == C::EMPTY;}
+    bool outOfRange(int x,int y)const{return  x<0 || x>=width || y <0 || y>=height;}
+    bool isEmpty(int x,int y)const{return grids->get(x,y) == C::EMPTY;}
     void setGird(int x,int y,int fill){this->grids->set(x,y,fill);}
+
+    void clearLine();
     ~GameMap();
 signals:
 

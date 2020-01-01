@@ -6,10 +6,12 @@
 #include <random>
 #include <initializer_list>
 #include <deque>
+#include <QtDebug>
 class SeqBase
 {
 public:
     virtual int getNext() = 0;
+    virtual ~SeqBase(){};
 };
 
 class SevenBagSeq :public SeqBase {
@@ -21,6 +23,7 @@ public:
     SevenBagSeq() :SevenBagSeq(time(nullptr)) {}
     SevenBagSeq(int seed) :seed(seed) {genebag();}
     int getNext()override;
+    ~SevenBagSeq(){}
 };
 
 class RepeatSeq :public SeqBase {
@@ -29,5 +32,6 @@ private:
 public:
     RepeatSeq(const std::initializer_list<int>& list);
     int getNext()override;
+    ~RepeatSeq(){}
 };
 #endif // SEQ_H

@@ -30,7 +30,7 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
     }else if(ev->key() == this->hardDrop){
         if(!ev->isAutoRepeat()){//防止长按一直转
             widow->geteTetro()->hardDrop();
-            widow->geneNewTetro();
+            widow->getMap()->clearLine();
         }
     }else if(ev->key() == this->leftRotate){
         if(!ev->isAutoRepeat())//防止长按一直转
@@ -71,7 +71,7 @@ void KeyPressManager::arrEvent()
 
 void KeyPressManager::startArrTimer()
 {
-    qDebug()<<"in arr timer";
+   // qDebug()<<"in arr timer";
     this->arrEvent();
     this->arrTimer->start(ARR);
 }

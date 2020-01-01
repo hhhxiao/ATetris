@@ -14,7 +14,7 @@
  *
  *  (0,0)(1,0)(2,0)
  *     ------------------->x
- *(0,1)|XXXXXXXXXXXXXX
+ *(0,1)|XXXXXXXXXXXXXX//一行一个vector
  *(0,2)|XXXXXXXXXXXXXX
  *(0,3)|XXXXXXXXXXXXXX
  *     y
@@ -24,14 +24,14 @@ class Grid
 {
 private:
     QVector<QVector<T>> data;
-    int width;
-    int height;
+    const int width;
+    const  int height;
 public:
     Grid(int width,int height,T val);
     void set(int x,int y,T val);
     T get(int x,int y)const;
-    int getHeight(){return height;}
-    int getWidth(){return  width;}
+    int getHeight()const {return height;}
+    int getWidth()const{return  width;}
     int transpose();
     void upSideDown();
     void flipLeftRight();
@@ -39,6 +39,7 @@ public:
     void rotation();
     void antiRotation();
     void each(std::function<void(int,int,T&)> f);
+    void deleteLine(std::function<bool(const QVector<T> &)> f,T fill);
 };
 template<typename T>
 Grid<T>::Grid(int width, int height,T val):width(width),height(height)
@@ -103,16 +104,21 @@ void Grid<T>::each(std::function<void (int, int, T &)> f)
     }
 }
 
-//template<typename T>
-//void Grid<T>::each(std::function<void (T &)> f)
-//{
-//    for(int i = 0;i<this->width;i++){
-//        for(int j = 0;j<this->width;j++){
-//            f(this[j][i]);
-//        }
-//    }
-//}
-
+//消去某些有条件的行
+template<typename T>
+void Grid<T>::deleteLine (std::function<bool (const QVector<T>&)> f,T fill)
+{
+    for(auto i=data.begin();i!=data.end();){
+        if(f(*i)){
+         i = data.erase(i);
+        }else {
+           ++i;
+        }
+    }
+    int less = this->getHeight() - data.size();
+    for(int i = 0;i<less;i++)
+        data.push_front(QVector<T>(getWidth(),fill));
+}
 template<typename T>
 T Grid<T>::get(int x, int y)const
 {

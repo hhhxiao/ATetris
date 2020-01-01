@@ -12,16 +12,20 @@ class GameMode
     SeqBase *sequence;
     bool gravity = true;
     QSet<LineClearType> filters;
-    bool cheatEnale = false;
+    bool cheat = true;
     int taskNum = 40;
 public:
     GameMode();
+    ~GameMode();
     int getNextTetro(){
         return this->sequence->getNext();
     }
 
     bool getGravity(){
         return gravity;
+    }
+    bool cheatEnable(){
+        return  this->cheat;
     }
 };
 
