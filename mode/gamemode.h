@@ -27,6 +27,11 @@ public:
     bool cheatEnable(){
         return  this->cheat;
     }
+
+    void gravityToggle(){
+        if(cheat)
+            this->gravity = !this->gravity;
+    }
 };
 
 

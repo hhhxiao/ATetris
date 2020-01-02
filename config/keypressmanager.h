@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QWidget>
 
+//这里的按键检测代码能简化
+
 class StartWindow;
 enum ArrEventType{MOVE_LEFT,MOVE_RIGHT};
 class KeyPressManager: public QObject
@@ -18,9 +20,11 @@ private:
     int drop = Qt::Key_Down;
     int leftRotate = Qt::Key_Z;
     int rightRotate = Qt::Key_X;
-    ArrEventType eventType = MOVE_LEFT;
+    int pauseDropTimer = Qt::Key_P;
 
+    ArrEventType eventType = MOVE_LEFT;
    QTimer *dasTimer,*arrTimer;
+   QTimer *softDropDas,*softDropArr;
 public:
     static const int DAS;
     static const int ARR;
@@ -32,6 +36,10 @@ public:
 public slots:
     void arrEvent();
     void startArrTimer();
+
+    void softDropArrEvent();
+    void startSoftDropArrTimer();
+
 };
 
 #endif // KEYPRESSMANAGER_H

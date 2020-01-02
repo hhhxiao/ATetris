@@ -52,6 +52,10 @@ public:
         //qDebug()<<"又活了!!";
     }
 
+    int getType(){
+        return this->type;
+    }
+
     int getGhostY();
     void tspinCheck(int num,const QPoint &p,int dir);
     QPair<int,QPoint> rotateTest(int rotationAngle);

@@ -9,12 +9,23 @@ KeyPressManager::KeyPressManager(StartWindow *win){
     dasTimer->setSingleShot(true);
     connect(dasTimer,SIGNAL(timeout()),this,SLOT(startArrTimer()));
     connect(arrTimer,SIGNAL(timeout()),this,SLOT(arrEvent()));
+
+    this->softDropArr = new QTimer(this);
+    this->softDropDas = new QTimer(this);
+    softDropDas->setSingleShot(true);
+    connect(softDropDas,SIGNAL(timeout()),this,SLOT(startSoftDropArrTimer()));
+    connect(softDropArr,SIGNAL(timeout()),this,SLOT(softDropArrEvent()));
+
+
 }
 KeyPressManager::KeyPressManager()=default;
 void KeyPressManager::keyPressHandler(QKeyEvent *ev)
 {
     if(ev->key() == this->drop){
-        widow->geteTetro()->drop();
+        if(!ev->isAutoRepeat()){
+            this->softDropArrEvent();
+            softDropDas->start(DAS);
+        }
     }else if(ev->key() == this->moveLeft){
         this->eventType = MOVE_LEFT;
         if(!ev->isAutoRepeat()){
@@ -38,6 +49,10 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
     }else if(ev->key() == this->rightRotate){
         if(!ev->isAutoRepeat())//防止长按一直转
             widow->geteTetro()->rigthRotate();
+    }else if(ev->key() == this->pauseDropTimer) {
+        if(!ev->isAutoRepeat()){
+            widow->getGameMode().gravityToggle();
+        }
     }
 }
 
@@ -57,9 +72,14 @@ void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
                 this->dasTimer->stop();
             }
         }
+    }else if(ev->key() == this->drop){
+        if(!ev->isAutoRepeat()){
+            this->softDropArr->stop();
+            if(this->softDropDas->isActive())
+                softDropDas->stop();
+        }
     }
 }
-
 void KeyPressManager::arrEvent()
 {
     if(this->eventType == MOVE_LEFT){
@@ -74,6 +94,18 @@ void KeyPressManager::startArrTimer()
    // qDebug()<<"in arr timer";
     this->arrEvent();
     this->arrTimer->start(ARR);
+}
+
+void KeyPressManager::softDropArrEvent()
+{
+    widow->geteTetro()->drop();
+}
+
+void KeyPressManager::startSoftDropArrTimer()
+{
+    widow->geteTetro()->drop();
+    this->softDropArr->start(ARR);
+
 }
 
 const int KeyPressManager::DAS = 100;

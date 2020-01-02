@@ -22,17 +22,21 @@ public:
     StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
     virtual void keyPressEvent(QKeyEvent *ev);
-    virtual void keyReleaseEvent(QKeyEvent *ev);
+    virtual void keyReleaseEvent(QKeyEvent *ev); 
+    void wheelEvent(QWheelEvent * event);
     Tetromino* geteTetro();
     GameMap *getMap();
     bool cheatEnable(){return  this->mode.cheatEnable();}
+    QTimer* getDropTimer(){return  this->dropTimer; }
+    GameMode& getGameMode(){return this->mode;}
 public slots:
     void geneNewTetro();
+    void drop();
 private:
     Ui::StartWindow *ui;
     GameMap *map;
     Tetromino *tetro;
-    QTimer *timer;
+    QTimer *dropTimer;
     GameMode mode;
     KeyPressManager *keyManager;
     QVector<NextWidnow*> nextWindows;

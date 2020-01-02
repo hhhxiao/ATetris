@@ -9,17 +9,20 @@ StartWindow::StartWindow(QWidget *parent)
     ui->setupUi(this);
     map = new GameMap(this);
     tetro = new Tetromino(1,map,map);
-    this->timer = new QTimer(this);
-    if(mode.getGravity())timer->start(800);
+    this->dropTimer = new QTimer(this);
+    dropTimer->start(800);
     keyManager = new KeyPressManager(this);
     connect(tetro,SIGNAL(death()),this,SLOT(geneNewTetro()));
-     connect(timer,SIGNAL(timeout()),tetro,SLOT(drop()));
+     connect(dropTimer,SIGNAL(timeout()),this,SLOT(drop()));
      for(int i = 0;i<6;i++){
          NextWidnow *w = new NextWidnow(this,mode.getNextTetro());
          w->setGeometry(400,160*i,40*32,40*32);
         nextWindows.push_back(w);
      }
      geneNewTetro();
+     if(mode.cheatEnable()){
+         this->map->setEdit(true);
+     }
      //this->setFixedSize(C::WIDTH*C::MAP_WIDTH+10,C::WIDTH*C::MAP_HEIGHT+10);
 }
 
@@ -30,7 +33,7 @@ StartWindow::~StartWindow(){
         delete i;
     delete map;
     delete ui;
-    delete timer;
+    delete dropTimer;
 }
 
 void StartWindow::keyPressEvent(QKeyEvent *ev){keyManager->keyPressHandler(ev);}
@@ -38,6 +41,16 @@ void StartWindow::keyPressEvent(QKeyEvent *ev){keyManager->keyPressHandler(ev);}
 
 
 void StartWindow::keyReleaseEvent(QKeyEvent *ev){keyManager->keyReleaseHanler(ev);}
+
+void StartWindow::wheelEvent(QWheelEvent *event)
+{
+    if(mode.cheatEnable()){
+        int currentType = tetro->getType();
+        this->tetro->reset( (event->delta()/120+currentType+13)%7+1);
+        tetro->repaint();
+    }
+
+}
 void StartWindow::geneNewTetro(){
 
 
@@ -47,7 +60,14 @@ void StartWindow::geneNewTetro(){
     for(int i = 0;i<size-1;i++){
         nextWindows[i]->setType(nextWindows[i+1]->getType());
     }
-       nextWindows[size-1]->setType(mode.getNextTetro());
+    nextWindows[size-1]->setType(mode.getNextTetro());
+}
+
+void StartWindow::drop()
+{
+    if(mode.getGravity()){
+        tetro->drop();
+    }
 }
 
 Tetromino *StartWindow::geteTetro(){return this->tetro;}
