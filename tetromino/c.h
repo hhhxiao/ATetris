@@ -33,6 +33,12 @@ public:
     static const int TRIGLE;
     static const int TETRIS;
 
+    static const int T_SPIN;
+    static const int T_SPIN_MINI;
+    static const int NO_SPIN;
+
+    static const bool ROTATION;
+    static const bool MOVE;
     //rotate Date
     static const QMap<int,QColor> BLOCK_COLOR_LIST;
     static const QVector<QVector<QPoint>> I_WALL_KICK_LIST;

@@ -17,6 +17,7 @@ void MainWindow::on_beginGame_clicked()
 {
     this->startWindow = new StartWindow();
     startWindow->show();
+    this->close();
 }
 
 

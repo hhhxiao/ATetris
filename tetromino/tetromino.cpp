@@ -24,7 +24,7 @@ Grid<bool>* Tetromino::createBlocks( int type,int &x)
         blocks = new Grid<bool>(4,4,false);
         for(int i = 0;i<4;i++)
             blocks->set(i,1,true);
-        x = 2;
+        x = 3;
         //o init
     }else if(type == C::O_BLOCK){
         blocks = new Grid<bool>(2,2,true);
@@ -69,21 +69,38 @@ Grid<bool>* Tetromino::createBlocks( int type,int &x)
 void Tetromino::init()
 {
     this->state = C::DIR_0;
-    this->y = 0;
+    this->y = 19;
     this->willDeath = false;
     this->blocks = createBlocks(this->type,this->x);
 }
 
 //处死当前方块
 void Tetromino::fix(){
+    int tspinResult =  tspinCheck();
     this->blocks->each([this](int dx,int dy,bool value){
         if(value)
             gameMap->setGird(dx+x,dy+y,this->type);
     });
-    gameMap->update();
-    //qDebug()<<"death!!!";
-    emit death();
+    emit death(tspinResult);
 }
+
+
+int Tetromino::tspinCheck()
+{
+    if(this->type != C::T_SPIN)return  C::NO_SPIN;
+    int dx[4] = {1,-1,0,0};
+    int dy[4] = {0,0,1,-1};
+    int result = 0;
+    for(int i = 0;i<4;i++){
+        if(positionValid(*gameMap,*blocks,this->x+dx[i],this->y+dy[i]))
+            result++;
+    }
+    return  result==0?C::T_SPIN:C::NO_SPIN;
+}
+
+
+
+
 
 //重置方块
 void Tetromino::reset(int type)
@@ -141,8 +158,10 @@ void Tetromino::movRight()
 
 //硬降
 void Tetromino::hardDrop(){
-    while(positionValid(*gameMap,*blocks,x,y+1))
-        ++y;
+    if(!willDeath){
+        while(positionValid(*gameMap,*blocks,x,y+1))
+            ++y;
+    }
     update();
     fix();
 }
@@ -154,7 +173,7 @@ void Tetromino::rigthRotate()
     auto pair = this->rotateTest(C::CLOCK_WISE);
     if(pair.first == -1)return;//没转成功就直接返回
     relive();
-    tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
+   // tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
     this->blocks->rotation();
     this->x += pair.second.x();
     this->y -= pair.second.y();
@@ -169,7 +188,7 @@ void Tetromino::leftRotate()
     auto pair = this->rotateTest(C::CLOCK_ANTI_WISE);
     if(pair.first == -1)return;
     relive();
-     tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
+    // tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
     this->blocks->antiRotation();
     this->x += pair.second.x();
     this->y -= pair.second.y();
@@ -185,34 +204,6 @@ int Tetromino::getGhostY()
     return pos;
 }
 
-void Tetromino::tspinCheck(int num, const QPoint &p, int dir)
-{
-    if(this->type != C::T_BLOCK)return;
-    if(num == 1){
-        qDebug()<<"Tspin mini";
-        return;
-    }
-    Grid<bool> testBlcok = *this->blocks;
-    if(dir == C::CLOCK_WISE){
-        testBlcok.rotation();
-    }else {
-        testBlcok.antiRotation();
-    }
-    int dx[4] = {1,-1,0,0};
-    int dy[4] = {0,0,1,-1};
-    int result = 0;
-    for(int i = 0;i<4;i++){
-        if(positionValid(*gameMap,testBlcok,
-                         this->x+dx[i]+p.x(),
-                         this->y+dy[i]-p.y()
-                         ))
-            result++;
-    }
-    if(result == 0){
-        qDebug()<<"tspin!!!";
-    }
-    return;
-}
 
 //SRS 5个offset位置分别测试
 QPair<int,QPoint> Tetromino::rotateTest(int rotationAngle)

@@ -12,8 +12,9 @@ StartWindow::StartWindow(QWidget *parent)
     this->dropTimer = new QTimer(this);
     dropTimer->start(800);
     keyManager = new KeyPressManager(this);
-    connect(tetro,SIGNAL(death()),this,SLOT(geneNewTetro()));
-     connect(dropTimer,SIGNAL(timeout()),this,SLOT(drop()));
+    connect(tetro,SIGNAL(death(int)),this,SLOT(geneNewTetro()));
+    connect(tetro,SIGNAL(death(int)),map,SLOT(clearLine(int)));
+    connect(dropTimer,SIGNAL(timeout()),this,SLOT(drop()));
      for(int i = 0;i<6;i++){
          NextWidnow *w = new NextWidnow(this,mode.getNextTetro());
          w->setGeometry(400,160*i,40*32,40*32);
@@ -52,9 +53,7 @@ void StartWindow::wheelEvent(QWheelEvent *event)
 
 }
 void StartWindow::geneNewTetro(){
-
-
-    map->clearLine();
+   // map->clearLine();
     this->tetro->reset(nextWindows[0]->getType());
     int size = nextWindows.size();
     for(int i = 0;i<size-1;i++){

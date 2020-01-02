@@ -25,9 +25,9 @@ protected:
     GameMap *gameMap;
     QPixmap *pixmap;
     int x = 0;
-    int y = 0;
+    int y = 19;
     Grid<bool> *blocks;
-
+    int lastTestNumber = 0;
 
 public:
     void paintEvent(QPaintEvent *);
@@ -57,18 +57,17 @@ public:
     }
 
     int getGhostY();
-    void tspinCheck(int num,const QPoint &p,int dir);
+    int tspinCheck();
     QPair<int,QPoint> rotateTest(int rotationAngle);
     QVector<QPoint> readPoint(int rotationAngle);
     void setPos(int x,int y){this->x = x;this->y = y;repaint();}
     //static functions
     static Grid<bool>* createBlocks(int type,int &x);
     static bool positionValid(const GameMap &map, Grid<bool> &grids,int x,int y);
-
 public slots:
     void drop();
     void fix();
 signals:
-    void death(); //死亡信号
+    void death(int); //死亡信号
 };
 #endif // TETROMINO_H

@@ -21,26 +21,35 @@ const int C::DIR_R = 3;
 
 //map
 const int C::MAP_WIDTH = 10;
-const int C::MAP_HEIGHT = 20;
-const int C::WIDTH = 32;
+const int C::MAP_HEIGHT = 40;
+const int C::WIDTH = 35;
 
 const int C::CLOCK_WISE = 1;
 const int C::CLOCK_ANTI_WISE = 0;
 
+//line clear
 const int C::SINGLE = 1;
 const int C::DOUBLE = 2;
 const int C::TRIGLE = 3;
 const int C::TETRIS = 4;
 
+//tspin
+const int C::NO_SPIN = 0;
+const int C::T_SPIN_MINI = 1;
+const int C::T_SPIN = 2;
+
+const bool C::MOVE = false;
+const bool C::ROTATION = true;
+
 //base color
 const QMap<int,QColor> C::BLOCK_COLOR_LIST = {
-    {C::I_BLOCK,Qt::cyan},
+    {C::I_BLOCK,QColor(0,206,209)},
     {C::J_BLOCK,QColor(239,121,33)},
-    {C::L_BLOCK,Qt::blue},
-    {C::S_BLOCK,Qt::green},
-    {C::Z_BLOCK,Qt::red},
-    {C::O_BLOCK,Qt::yellow},
-    {C::T_BLOCK,Qt::magenta},
+    {C::L_BLOCK,QColor(65,105,225)},
+    {C::S_BLOCK,QColor(46,139,87)},
+    {C::Z_BLOCK,QColor(220,20,60)},
+    {C::O_BLOCK,QColor(255,215,0)},
+    {C::T_BLOCK,QColor(148,0,211)},
     {C::GARBAGE,Qt::darkGray},
     {C::EMPTY,  QColor(40,40,40,30)}
 };

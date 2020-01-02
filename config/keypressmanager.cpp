@@ -41,7 +41,6 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
     }else if(ev->key() == this->hardDrop){
         if(!ev->isAutoRepeat()){//防止长按一直转
             widow->geteTetro()->hardDrop();
-            widow->getMap()->clearLine();
         }
     }else if(ev->key() == this->leftRotate){
         if(!ev->isAutoRepeat())//防止长按一直转

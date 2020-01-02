@@ -39,7 +39,7 @@ public:
     void rotation();
     void antiRotation();
     void each(std::function<void(int,int,T&)> f);
-    void deleteLine(std::function<bool(const QVector<T> &)> f,T fill);
+    int deleteLine(std::function<bool(const QVector<T> &)> f,T fill);
 };
 template<typename T>
 Grid<T>::Grid(int width, int height,T val):width(width),height(height)
@@ -106,7 +106,7 @@ void Grid<T>::each(std::function<void (int, int, T &)> f)
 
 //消去某些有条件的行
 template<typename T>
-void Grid<T>::deleteLine (std::function<bool (const QVector<T>&)> f,T fill)
+int Grid<T>::deleteLine (std::function<bool (const QVector<T>&)> f,T fill)
 {
     for(auto i=data.begin();i!=data.end();){
         if(f(*i)){
@@ -118,6 +118,7 @@ void Grid<T>::deleteLine (std::function<bool (const QVector<T>&)> f,T fill)
     int less = this->getHeight() - data.size();
     for(int i = 0;i<less;i++)
         data.push_front(QVector<T>(getWidth(),fill));
+    return less;
 }
 template<typename T>
 T Grid<T>::get(int x, int y)const
