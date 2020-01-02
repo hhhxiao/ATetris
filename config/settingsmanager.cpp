@@ -8,7 +8,10 @@ SettingsManager::SettingsManager()
 
 void SettingsManager::readSettingFile()
 {
-    QFile settingFile(":/config/json/settings.json");
+    QFile settingFile(fileName);
+    if(!settingFile.exists()){
+         qDebug() << "file don't exist";
+    }
     if(!settingFile.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << "could not read SettingFile";
         return;
@@ -41,4 +44,19 @@ int SettingsManager::getBindingKey(const QString &op)
     qDebug()<<op<<"   key is"<<keyStr<<"keyCode is  "<<getKey(keyStr);
     return this->getKey(keyStr);
 
+}
+
+void SettingsManager::saveSettings()
+{
+    QFile settingFile(fileName);
+    if(!settingFile.open(QFile::ReadWrite| QFile::Text)){
+        qDebug() << "could not read SettingFile";
+        return;
+    }
+    QJsonDocument jsonDoc;
+    jsonDoc.setObject(settings);
+    settingFile.seek(0);
+    settingFile.write(jsonDoc.toJson());
+    settingFile.flush();
+    settingFile.close();
 }

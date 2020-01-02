@@ -1,6 +1,24 @@
 <RCC>
-    <qresource prefix="/config">
-        <file>json/constant.json</file>
-        <file>json/settings.json</file>
+    <qresource prefix="/"/>
+    <qresource prefix="/style">
+        <file>style/add-line_horizontal.png</file>
+        <file>style/add-line_vertical.png</file>
+        <file>style/array_down.png</file>
+        <file>style/black.css</file>
+        <file>style/blue.css</file>
+        <file>style/checkbox_checked.png</file>
+        <file>style/checkbox_unchecked.png</file>
+        <file>style/error.png</file>
+        <file>style/Font Awesome Cheatsheet.png</file>
+        <file>style/fontawesome-webfont.ttf</file>
+        <file>style/gray.css</file>
+        <file>style/info.png</file>
+        <file>style/navy.css</file>
+        <file>style/qt_zh_CN.qm</file>
+        <file>style/question.png</file>
+        <file>style/radio_normal.png</file>
+        <file>style/radio_selected.png</file>
+        <file>style/sub-line_horizontal.png</file>
+        <file>style/sub-line_vertical.png</file>
     </qresource>
 </RCC>

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,8 +32,9 @@ void MainWindow::on_test_clicked()
 
 void MainWindow::on_settingButton_clicked()
 {
-    this->settingWindow = new SettingsWidnow();
+    this->settingWindow = new SettingsWidnow(this->settingManager);
     settingWindow->show();
+
 }
 
 void MainWindow::on_modeCreatorButton_clicked()

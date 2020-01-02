@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
-    <height>727</height>
+    <width>498</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>911</width>
-      <height>701</height>
+      <x>20</x>
+      <y>30</y>
+      <width>441</width>
+      <height>481</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -43,7 +43,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_3"/>
+          <widget class="QComboBox" name="leftMoveCb"/>
          </item>
         </layout>
        </item>
@@ -57,7 +57,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_8"/>
+          <widget class="QComboBox" name="rightMoveCb"/>
          </item>
         </layout>
        </item>
@@ -71,7 +71,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_7"/>
+          <widget class="QComboBox" name="softDropCb"/>
          </item>
         </layout>
        </item>
@@ -85,7 +85,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_4"/>
+          <widget class="QComboBox" name="hardDropCb"/>
          </item>
         </layout>
        </item>
@@ -94,12 +94,12 @@
          <item>
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>左旋</string>
+            <string>左旋(逆时针)</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_6"/>
+          <widget class="QComboBox" name="leftRotateCb"/>
          </item>
         </layout>
        </item>
@@ -108,12 +108,12 @@
          <item>
           <widget class="QLabel" name="label_11">
            <property name="text">
-            <string>右旋</string>
+            <string>右旋（顺时针）</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_9"/>
+          <widget class="QComboBox" name="rightRotateCb"/>
          </item>
         </layout>
        </item>
@@ -127,7 +127,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_10"/>
+          <widget class="QComboBox" name="holdCb"/>
          </item>
         </layout>
        </item>
@@ -141,7 +141,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_5"/>
+          <widget class="QComboBox" name="GravityCb"/>
          </item>
         </layout>
        </item>
@@ -150,103 +150,9 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>TextLabel</string>
+        <string>l灵敏度</string>
        </property>
       </widget>
-     </item>
-     <item row="1" column="1">
-      <layout class="QVBoxLayout" name="verticalLayout_12">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="horizontalSlider">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_22">
-         <item>
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="horizontalSlider_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_23">
-         <item>
-          <widget class="QLabel" name="label_16">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="horizontalSlider_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
-         <item>
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="horizontalSlider_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_21">
-         <item>
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="horizontalSlider_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label">
@@ -255,7 +161,174 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>DAS</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>ARR</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Drop DAS</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Drop ARR</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>LOCK TIME</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QSlider" name="dasHs">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_22">
+           <item>
+            <widget class="QSlider" name="ArrHs">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_23">
+           <item>
+            <widget class="QSlider" name="dropDasHs">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_20">
+           <item>
+            <widget class="QSlider" name="dropArrHs">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_21">
+           <item>
+            <widget class="QSlider" name="LockTimeHs">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="dasVal">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="arrVal">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="dropDasVal">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="DropArrVal">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lockTimeVal">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="save">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>520</y>
+      <width>92</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保存</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exit">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>520</y>
+      <width>92</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -263,7 +336,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>917</width>
+     <width>498</width>
      <height>26</height>
     </rect>
    </property>

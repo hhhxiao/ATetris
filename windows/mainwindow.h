@@ -7,6 +7,7 @@
 #include "modewindow.h"
 #include "./config/settingsmanager.h"
 #include "./config/keypressmanager.h"
+#include <QLineEdit>
 namespace Ui {
 class MainWindow;
 }
@@ -33,6 +34,7 @@ private:
     StartWindow *startWindow;
     SettingsWidnow *settingWindow;
     ModeWindow *modeWindow;
+
 };
 
 #endif // MAINWINDOW_H
