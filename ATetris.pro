@@ -16,13 +16,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    config/jsonmanager.cpp \
     config/keypressmanager.cpp \
+    config/settingsmanager.cpp \
     main.cpp \
-    mainwindow.cpp \
+    windows/mainwindow.cpp \
     mode/gamemode.cpp \
     seq/seq.cpp \
-    startwindow.cpp \
+    windows/modewindow.cpp \
+    windows/settingsWindow.cpp \
+    windows/startwindow.cpp \
     tetromino/c.cpp \
     tetromino/gamemap.cpp \
     tetromino/linecleartype.cpp \
@@ -30,9 +32,9 @@ SOURCES += \
     widget/nextwidnow.cpp
 
 HEADERS += \
-    config/jsonmanager.h \
     config/keypressmanager.h \
-    mainwindow.h \
+    config/settingsmanager.h \
+    windows/mainwindow.h \
     mode/gamemode.h \
     seq/seq.h \
     tetromino/c.h \
@@ -41,12 +43,16 @@ HEADERS += \
     tetromino/tetro.h \
     tetromino/tetromino.h \
     data/grid.h \
-    startwindow.h \
+    windows/modewindow.h \
+    windows/settingsWindow.h \
+    windows/startwindow.h \
     widget/nextwidnow.h
 
 FORMS += \
-    mainwindow.ui \
-    startwindow.ui
+    windows/mainwindow.ui \
+    windows/modewindow.ui \
+    windows/settingsWindow.ui \
+    windows/startwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -55,3 +61,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     README.md
+
+RESOURCES += \
+    res.qrc

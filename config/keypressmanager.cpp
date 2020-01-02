@@ -1,6 +1,8 @@
 #include "keypressmanager.h"
-#include "startwindow.h"
-void KeyPressManager::setWindow(StartWindow *window){ this->widow = window;}
+#include "../windows/startwindow.h"
+void KeyPressManager::setWindow(StartWindow *window){
+    this->widow = window;
+}
 
 KeyPressManager::KeyPressManager(StartWindow *win){
     this->widow = win;
@@ -9,18 +11,16 @@ KeyPressManager::KeyPressManager(StartWindow *win){
     dasTimer->setSingleShot(true);
     connect(dasTimer,SIGNAL(timeout()),this,SLOT(startArrTimer()));
     connect(arrTimer,SIGNAL(timeout()),this,SLOT(arrEvent()));
-
     this->softDropArr = new QTimer(this);
     this->softDropDas = new QTimer(this);
     softDropDas->setSingleShot(true);
     connect(softDropDas,SIGNAL(timeout()),this,SLOT(startSoftDropArrTimer()));
     connect(softDropArr,SIGNAL(timeout()),this,SLOT(softDropArrEvent()));
-
-
 }
-KeyPressManager::KeyPressManager()=default;
+KeyPressManager::KeyPressManager():KeyPressManager(nullptr){};
 void KeyPressManager::keyPressHandler(QKeyEvent *ev)
 {
+   // qDebug()<<ev->key()<<" was pressed";
     if(ev->key() == this->drop){
         if(!ev->isAutoRepeat()){
             this->softDropArrEvent();
@@ -79,6 +79,18 @@ void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
         }
     }
 }
+
+void KeyPressManager::setKeyBinding(SettingsManager *manager)
+{
+    this->hardDrop = manager->getBindingKey("hardDrop");
+    this->moveLeft = manager->getBindingKey("moveLeft");
+    this->moveRight = manager->getBindingKey("moveRight");
+    this->drop = manager->getBindingKey("softDrop");
+    this->leftRotate = manager->getBindingKey("leftRotate");
+    this->rightRotate = manager->getBindingKey("rightRotate");
+    this->pauseDropTimer = manager->getBindingKey("pause");
+}
+
 void KeyPressManager::arrEvent()
 {
     if(this->eventType == MOVE_LEFT){

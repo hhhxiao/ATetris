@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QWidget>
+#include "settingsmanager.h"
 
 //这里的按键检测代码能简化
 
@@ -33,10 +34,11 @@ public:
     KeyPressManager();
     void keyPressHandler(QKeyEvent *ev);
     void keyReleaseHanler(QKeyEvent *ev);
+    void setKeyBinding(SettingsManager *manager);
+
 public slots:
     void arrEvent();
     void startArrTimer();
-
     void softDropArrEvent();
     void startSoftDropArrTimer();
 

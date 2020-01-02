@@ -1,0 +1,19 @@
+{
+    "keyBinding":{
+    "moveRight": "Right",
+    "moveLeft": "Left",
+    "softDrop": "Down",
+    "hardDrop": "Space",
+    "rightRotate":"A",
+    "leftRotate": "Z",
+    "hold": "Shift",
+    "pause": "P"
+    },
+    "control":{
+        "das":100,
+        "arr":100,
+        "dropDas":100,
+        "dropArr":200,
+        "lockTime":800
+    }
+}

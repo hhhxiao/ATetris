@@ -37,7 +37,6 @@ const int C::TETRIS = 4;
 const int C::NO_SPIN = 0;
 const int C::T_SPIN_MINI = 1;
 const int C::T_SPIN = 2;
-
 const bool C::MOVE = false;
 const bool C::ROTATION = true;
 
