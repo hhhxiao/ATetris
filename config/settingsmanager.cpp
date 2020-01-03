@@ -21,6 +21,8 @@ void SettingsManager::readSettingFile()
     QJsonParseError json_error;
     QJsonDocument jsonDoc(QJsonDocument::fromJson(mText, &json_error));
     this->settings = jsonDoc.object();
+    this->keyBinding = settings.value("keyBinding").toObject();;
+    this->sensitivity = settings.value("sensitivity").toObject();;
 }
 
 void SettingsManager::initKeyMapping()
@@ -39,7 +41,6 @@ void SettingsManager::initKeyMapping()
 
 int SettingsManager::getBindingKey(const QString &op)
 {
-    auto keyBinding =   settings.value("keyBinding").toObject();
     QString keyStr =  keyBinding.value(op).toString();
     qDebug()<<op<<"   key is"<<keyStr<<"keyCode is  "<<getKey(keyStr);
     return this->getKey(keyStr);
@@ -54,6 +55,8 @@ void SettingsManager::saveSettings()
         return;
     }
     QJsonDocument jsonDoc;
+    settings["keyBinding"]=this->keyBinding;
+    settings["sensitivity"]=this->sensitivity;
     jsonDoc.setObject(settings);
     settingFile.seek(0);
     settingFile.write(jsonDoc.toJson());

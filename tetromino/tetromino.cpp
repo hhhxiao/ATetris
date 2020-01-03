@@ -99,9 +99,6 @@ int Tetromino::tspinCheck()
 }
 
 
-
-
-
 //重置方块
 void Tetromino::reset(int type)
 {

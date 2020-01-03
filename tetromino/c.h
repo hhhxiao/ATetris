@@ -7,7 +7,7 @@
 class C
 {
 public:
-    static const int WIDTH;
+    static const int WIDTH;   
     static const int I_BLOCK;
     static const int T_BLOCK;
     static const int L_BLOCK;

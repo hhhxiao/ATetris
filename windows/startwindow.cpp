@@ -15,16 +15,29 @@ StartWindow::StartWindow(KeyPressManager* manager,QWidget *parent)
     keyManager->setWindow(this);
     connect(tetro,SIGNAL(death(int)),this,SLOT(geneNewTetro()));
     connect(tetro,SIGNAL(death(int)),map,SLOT(clearLine(int)));
+    connect(tetro,SIGNAL(death(int)),this,SLOT(enableHold()));
     connect(dropTimer,SIGNAL(timeout()),this,SLOT(drop()));
      for(int i = 0;i<6;i++){
-         NextWidnow *w = new NextWidnow(this,mode.getNextTetro());
-         w->setGeometry(400,160*i,40*32,40*32);
+         NextWindow *w = new NextWindow(this,mode.getNextTetro());
+         w->setGeometry(500,20+120*i,120,120);
         nextWindows.push_back(w);
      }
+     holdWindow = new NextWindow(this,C::EMPTY);
+     holdWindow->setWidthScale(1.2);
+     holdWindow->setGeometry(20,20,120,120);
+     nextWindows[0]->setWidthScale(1.2);
+
      geneNewTetro();
      if(mode.cheatEnable()){
          this->map->setEdit(true);
      }
+
+     this->stopwatch = new QTimer(this);
+     this->time = new QTime(14,0,0);
+    connect(stopwatch,SIGNAL(timeout()),SLOT(updateTime()));
+    // panel= new StatisticsPanel(this);
+    // panel->setGeometry(600,100,200,200);
+    this->map->setFocus();
 }
 
 StartWindow::~StartWindow(){
@@ -73,4 +86,31 @@ Tetromino *StartWindow::geteTetro(){return this->tetro;}
 
 GameMap *StartWindow::getMap(){return  this->map;}
 
+void StartWindow::hold()
+{
+    if(!hasHold){
+        if(holdWindow->getType() == C::EMPTY){
+            holdWindow->setType(tetro->getType());
+            geneNewTetro();
+        }
+        int type = this->tetro->getType();
+        this->tetro->reset(holdWindow->getType());
+        tetro->update();
+        holdWindow->setType(type);
+        hasHold = true;
+    }
+}
 
+void StartWindow::updateTime(){
+    qDebug("time reach");
+    auto i= this->time->addSecs(1);
+    qDebug()<<time->isValid();
+    ui->timerLabel->setText(time->toString("HH,MM,ss"));
+}
+
+
+
+void StartWindow::on_startBtn_clicked()
+{
+    this->stopwatch->start(1000);
+}

@@ -14,7 +14,14 @@ class KeyPressManager: public QObject
 {
     Q_OBJECT
 private:
-    StartWindow *widow;
+    StartWindow *window;
+    int das = 100;
+    int arr = 20;
+    int dropArr = 100;
+    int dropDas = 20;
+
+
+
     int hardDrop = Qt::Key_Space;
     int moveRight = Qt::Key_Right;
     int moveLeft = Qt::Key_Left;
@@ -22,19 +29,18 @@ private:
     int leftRotate = Qt::Key_Z;
     int rightRotate = Qt::Key_X;
     int pauseDropTimer = Qt::Key_P;
+    int hold = Qt::Key_Shift;
 
     ArrEventType eventType = MOVE_LEFT;
    QTimer *dasTimer,*arrTimer;
    QTimer *softDropDas,*softDropArr;
 public:
-    static const int DAS;
-    static const int ARR;
     void setWindow(StartWindow *window);
     KeyPressManager(StartWindow *window);
     KeyPressManager();
     void keyPressHandler(QKeyEvent *ev);
     void keyReleaseHanler(QKeyEvent *ev);
-    void setKeyBinding(SettingsManager *manager);
+    void initSetting(SettingsManager *manager);
 
 public slots:
     void arrEvent();

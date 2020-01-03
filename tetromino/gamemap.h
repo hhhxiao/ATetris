@@ -33,6 +33,8 @@ public:
     ~GameMap();
 public slots:
     void clearLine(int spin);
+signals:
+    int attack(int);
 };
 
 #endif // GAMEMAP_H

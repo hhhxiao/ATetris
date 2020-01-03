@@ -21,9 +21,7 @@ public:
 
 private slots:
     void on_save_clicked();
-
     void on_exit_clicked();
-
 private:
     Ui::Settings *ui;
     SettingsManager *manager;

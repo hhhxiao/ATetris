@@ -1,11 +1,11 @@
 #include "keypressmanager.h"
 #include "../windows/startwindow.h"
 void KeyPressManager::setWindow(StartWindow *window){
-    this->widow = window;
+    this->window = window;
 }
 
 KeyPressManager::KeyPressManager(StartWindow *win){
-    this->widow = win;
+    this->window = win;
     this->arrTimer = new QTimer(this);
     this->dasTimer = new QTimer(this);
     dasTimer->setSingleShot(true);
@@ -20,37 +20,37 @@ KeyPressManager::KeyPressManager(StartWindow *win){
 KeyPressManager::KeyPressManager():KeyPressManager(nullptr){};
 void KeyPressManager::keyPressHandler(QKeyEvent *ev)
 {
-   // qDebug()<<ev->key()<<" was pressed";
+    // qDebug()<<ev->key()<<" was pressed";
     if(ev->key() == this->drop){
         if(!ev->isAutoRepeat()){
             this->softDropArrEvent();
-            softDropDas->start(DAS);
+            softDropDas->start(dropDas);
         }
     }else if(ev->key() == this->moveLeft){
         this->eventType = MOVE_LEFT;
         if(!ev->isAutoRepeat()){
             this->arrEvent();
-            dasTimer->start(DAS);
+            dasTimer->start(das);
         }
     }else if(ev->key() == this->moveRight){
         this->eventType = MOVE_RIGHT;
         if(!ev->isAutoRepeat()){
             this->arrEvent();
-            dasTimer->start(DAS);
+            dasTimer->start(das);
         }
     }else if(ev->key() == this->hardDrop){
         if(!ev->isAutoRepeat()){//防止长按一直转
-            widow->geteTetro()->hardDrop();
+            window->geteTetro()->hardDrop();
         }
     }else if(ev->key() == this->leftRotate){
         if(!ev->isAutoRepeat())//防止长按一直转
-            widow->geteTetro()->leftRotate();
+            window->geteTetro()->leftRotate();
     }else if(ev->key() == this->rightRotate){
         if(!ev->isAutoRepeat())//防止长按一直转
-            widow->geteTetro()->rigthRotate();
+            window->geteTetro()->rigthRotate();
     }else if(ev->key() == this->pauseDropTimer) {
         if(!ev->isAutoRepeat()){
-            widow->getGameMode().gravityToggle();
+            window->getGameMode().gravityToggle();
         }
     }
 }
@@ -78,9 +78,15 @@ void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
                 softDropDas->stop();
         }
     }
+
+    else if(ev->key() == this->hold){
+        if(!ev->isAutoRepeat()){
+            window->hold();
+        }
+    }
 }
 
-void KeyPressManager::setKeyBinding(SettingsManager *manager)
+void KeyPressManager::initSetting(SettingsManager *manager)
 {
     this->hardDrop = manager->getBindingKey("hardDrop");
     this->moveLeft = manager->getBindingKey("moveLeft");
@@ -89,35 +95,37 @@ void KeyPressManager::setKeyBinding(SettingsManager *manager)
     this->leftRotate = manager->getBindingKey("leftRotate");
     this->rightRotate = manager->getBindingKey("rightRotate");
     this->pauseDropTimer = manager->getBindingKey("pause");
+    this->hold = manager->getBindingKey("hold");
+    this->das = manager->getDas();
+    this->arr = manager->getArr();
+    this->dropDas = manager->getDropDas();
+    this->dropArr = manager->getDropArr();
 }
 
 void KeyPressManager::arrEvent()
 {
     if(this->eventType == MOVE_LEFT){
-        widow->geteTetro()->moveLeft();
+        window->geteTetro()->moveLeft();
     }else {
-        widow->geteTetro()->movRight();
+        window->geteTetro()->movRight();
     }
 }
 
 void KeyPressManager::startArrTimer()
 {
-   // qDebug()<<"in arr timer";
+    // qDebug()<<"in arr timer";
     this->arrEvent();
-    this->arrTimer->start(ARR);
+    this->arrTimer->start(arr);
 }
 
 void KeyPressManager::softDropArrEvent()
 {
-    widow->geteTetro()->drop();
+    window->geteTetro()->drop();
 }
 
 void KeyPressManager::startSoftDropArrTimer()
 {
-    widow->geteTetro()->drop();
-    this->softDropArr->start(ARR);
+    window->geteTetro()->drop();
+    this->softDropArr->start(dropArr);
 
 }
-
-const int KeyPressManager::DAS = 100;
-const int KeyPressManager::ARR = 40;

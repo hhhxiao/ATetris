@@ -7,7 +7,8 @@
 #include "../seq/seq.h"
 #include "../mode/gamemode.h"
 #include "../config/keypressmanager.h"
-#include "../widget/nextwidnow.h"
+#include "../widget/nextwindow.h"
+#include <QTime>
 #include <QTimer>
 #include <QSet>
 #include <QVector>
@@ -29,9 +30,16 @@ public:
     bool cheatEnable(){return  this->mode.cheatEnable();}
     QTimer* getDropTimer(){return  this->dropTimer; }
     GameMode& getGameMode(){return this->mode;}
+    void hold();
+    bool hasHold = false;
 public slots:
     void geneNewTetro();
     void drop();
+    void enableHold(){this->hasHold = false;}
+    void updateTime();
+private slots:
+    void on_startBtn_clicked();
+
 private:
     Ui::StartWindow *ui;
     GameMap *map;
@@ -39,7 +47,11 @@ private:
     QTimer *dropTimer;
     GameMode mode;
     KeyPressManager *keyManager;
-    QVector<NextWidnow*> nextWindows;
+    QVector<NextWindow*> nextWindows;
+    NextWindow* holdWindow;
+    QTimer *stopwatch;
+    QTime *time;
+  //  StatisticsPanel *panel;
 
 };
 #endif // STARTWINDOW_H

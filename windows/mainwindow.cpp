@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     this->keyManager = new KeyPressManager();
     this->settingManager = new SettingsManager();
-    this->keyManager->setKeyBinding(settingManager);
+    this->keyManager->initSetting(settingManager);
     ui->setupUi(this);
 }
 

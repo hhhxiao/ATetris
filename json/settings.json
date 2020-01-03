@@ -1,11 +1,4 @@
 {
-    "control": {
-        "arr": 100,
-        "das": 100,
-        "dropArr": 200,
-        "dropDas": 100,
-        "lockTime": 800
-    },
     "keyBinding": {
         "hardDrop": "Space",
         "hold": "Shift",
@@ -13,7 +6,17 @@
         "moveLeft": "Left",
         "moveRight": "Right",
         "pause": "P",
-        "rightRotate": "Right",
+        "rightRotate": "X",
         "softDrop": "Down"
+    },
+    "sensitivity": {
+        "arr": 15,
+        "das": 120,
+        "dropArr": 10,
+        "dropDas": 10,
+        "lockTime": 500
     }
 }
+
+
+
