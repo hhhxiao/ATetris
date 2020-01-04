@@ -74,20 +74,24 @@ void Tetromino::init()
     this->blocks = createBlocks(this->type,this->x);
 }
 
-//处死当前方块
+//suo's锁死当前方块
 void Tetromino::fix(){
-    int tspinResult =  tspinCheck();
+   int tspinResult =  tspinCheck();
+    lastTestNumber = -1;
     this->blocks->each([this](int dx,int dy,bool value){
         if(value)
             gameMap->setGird(dx+x,dy+y,this->type);
     });
+    //tspin mini 辅助判定
     emit death(tspinResult);
 }
 
 
 int Tetromino::tspinCheck()
 {
-    if(this->type != C::T_SPIN)return  C::NO_SPIN;
+    //计算是否可移动:
+    int spin = C::NO_SPIN;
+    if(this->type != C::T_BLOCK || lastTestNumber == -1)return C::NO_SPIN;
     int dx[4] = {1,-1,0,0};
     int dy[4] = {0,0,1,-1};
     int result = 0;
@@ -95,7 +99,43 @@ int Tetromino::tspinCheck()
         if(positionValid(*gameMap,*blocks,this->x+dx[i],this->y+dy[i]))
             result++;
     }
-    return  result==0?C::T_SPIN:C::NO_SPIN;
+    switch (this->lastTestNumber) {
+    case 0:
+        spin =  result == 0?C::T_SPIN:C::NO_SPIN;
+        break;
+    case 1:
+        spin = C::T_SPIN_MINI;
+        break;
+    case 2:
+        if(this->state == C::DIR_2){
+            if(gameMap->get(x,y+2) != C::EMPTY && gameMap->get(x+2,y+2) !=C::EMPTY){
+                spin =  C::T_SPIN;
+            }else {
+                spin = C::T_SPIN_MINI;
+            }
+        }else if(this->state == C::DIR_0){
+            if( this->y < gameMap->getHeight()-2 &&
+                    gameMap->get(x,y+2)!=C::EMPTY&&
+                    gameMap->get(x+1,y+2)==C::EMPTY&&
+                    gameMap->get(x+2,y+2)!=C::EMPTY){
+                spin = C::T_SPIN;
+            }else {
+            spin = C::T_SPIN_MINI;
+        }
+        }
+        break;
+    default:
+        spin = C::T_SPIN;
+    }
+        if(spin == C::T_SPIN){
+                qDebug()<<"T_spin";
+        }else if(spin == C::T_SPIN_MINI){
+                qDebug()<<"T_spin mini";
+        }else if(spin == C::NO_SPIN) {
+            qDebug()<<"NO_spin";
+
+        }
+    return  spin;
 }
 
 
@@ -135,6 +175,7 @@ void Tetromino::paintEvent(QPaintEvent *)
 void Tetromino::moveLeft()
 {
     if(positionValid(*gameMap,*blocks,x-1,y)){
+        lastTestNumber = -1;
         relive();
         --x;
         repaint();
@@ -147,6 +188,7 @@ void Tetromino::movRight()
 {
     if(positionValid(*gameMap,*blocks,x+1,y))
     {
+        lastTestNumber = -1;
         relive();
         ++x;
         repaint();
@@ -156,8 +198,9 @@ void Tetromino::movRight()
 //硬降
 void Tetromino::hardDrop(){
     if(!willDeath){
-        while(positionValid(*gameMap,*blocks,x,y+1))
-            ++y;
+        while(positionValid(*gameMap,*blocks,x,y+1)){
+                 ++y;
+        }
     }
     update();
     fix();
@@ -175,6 +218,7 @@ void Tetromino::rigthRotate()
     this->x += pair.second.x();
     this->y -= pair.second.y();
     this->state= (this->state+3)%4;
+    this->lastTestNumber = pair.first;
     repaint();
 }
 
@@ -190,6 +234,7 @@ void Tetromino::leftRotate()
     this->x += pair.second.x();
     this->y -= pair.second.y();
     this->state = (this->state + 1)%4;
+    this->lastTestNumber = pair.first;
      repaint();
 }
 
@@ -240,6 +285,7 @@ void Tetromino::drop()
 {
     if(positionValid(*gameMap,*blocks,x,y+1))
     {
+        lastTestNumber = -1;
         ++y;
         repaint();
     }else{

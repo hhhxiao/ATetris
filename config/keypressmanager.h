@@ -31,9 +31,10 @@ private:
     int pauseDropTimer = Qt::Key_P;
     int hold = Qt::Key_Shift;
 
-    ArrEventType eventType = MOVE_LEFT;
-   QTimer *dasTimer,*arrTimer;
-   QTimer *softDropDas,*softDropArr;
+
+    QTimer *lDasTimer,*lArrTimer;
+    QTimer *rDasTimer,*rArrTimer;
+    QTimer *dropTimer;
 public:
     void setWindow(StartWindow *window);
     KeyPressManager(StartWindow *window);
@@ -43,10 +44,11 @@ public:
     void initSetting(SettingsManager *manager);
 
 public slots:
-    void arrEvent();
-    void startArrTimer();
-    void softDropArrEvent();
-    void startSoftDropArrTimer();
+    void startLarr();
+    void startRarr();
+    void leftEvent();
+    void rightEvent();
+    void dropEvent();
 
 };
 

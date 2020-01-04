@@ -12,7 +12,7 @@ GameMap::GameMap(QWidget *parent, int width, int height)
 
 GameMap::GameMap(QWidget *parent):GameMap(parent,C::MAP_WIDTH,C::MAP_HEIGHT){}
 
-void GameMap::clearLine(int spin)
+void GameMap::clearLine(int tspin)
 {
     int line =  this->grids->deleteLine([](const QVector<int> &vector){
         for(auto i :vector){
@@ -21,24 +21,23 @@ void GameMap::clearLine(int spin)
         }
         return true;
     },C::EMPTY);
-
     if(line >0){
         ++continusCombo;
     }else {
         continusCombo = 0;
     }
     if(continusCombo >=2){
-        qDebug()<<continusCombo<<" ren!";
+        emit ren(continusCombo);
     }
 
-    if(line == 4){
-        qDebug()<<"Tetris!!";
-    }else {
-        if(spin == 2){
-            qDebug()<<"ts"<<line<<"!!";
-        }else {
-        qDebug()<<line<<"line clear";
-    }
+    if(line > 0){
+        if(tspin == C::NO_SPIN){
+            emit lineSignal(line);//没有spin直接发射消行信号
+        }else if(tspin == C::T_SPIN_MINI){
+            emit(lineSignal(C::T_SPIN_MINI));
+        }else if(tspin == C::T_SPIN){
+            emit lineSignal(4+line);
+        }
     }
     this->repaint();
 }

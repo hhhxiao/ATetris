@@ -16,31 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    data/stat.cpp \
     widget/nextwindow.cpp\
     config/keypressmanager.cpp \
     config/settingsmanager.cpp \
     main.cpp \
     windows/gameoverdialog.cpp \
     windows/mainwindow.cpp \
-    mode/gamemode.cpp \
     seq/seq.cpp \
     windows/modewindow.cpp \
     windows/settingsWindow.cpp \
     windows/startwindow.cpp \
     tetromino/c.cpp \
     tetromino/gamemap.cpp \
-    tetromino/linecleartype.cpp \
     tetromino/tetromino.cpp
 
 HEADERS += \
     config/keypressmanager.h \
     config/settingsmanager.h \
     data/stat.h \
+    mode/fortymode.h \
+    mode/modebase.h \
     widget/nextwindow.h\
     windows/gameoverdialog.h \
     windows/mainwindow.h \
-    mode/gamemode.h \
     seq/seq.h \
     tetromino/c.h \
     tetromino/gamemap.h \

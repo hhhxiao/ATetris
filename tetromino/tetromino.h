@@ -27,7 +27,7 @@ protected:
     int x = 0;
     int y = 19;
     Grid<bool> *blocks;
-    int lastTestNumber = 0;
+    int lastTestNumber = -1;
 
 public:
     void paintEvent(QPaintEvent *);
@@ -68,6 +68,10 @@ public slots:
     void drop();
     void fix();
 signals:
+    //**
+     // 第一个参数是偏移点位
+    // 第二个参数是是否可移动
+    //第三个点位是固定位对应的方块情况是否是101
     void death(int); //死亡信号
 };
 #endif // TETROMINO_H

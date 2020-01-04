@@ -6,37 +6,39 @@ void KeyPressManager::setWindow(StartWindow *window){
 
 KeyPressManager::KeyPressManager(StartWindow *win){
     this->window = win;
-    this->arrTimer = new QTimer(this);
-    this->dasTimer = new QTimer(this);
-    dasTimer->setSingleShot(true);
-    connect(dasTimer,SIGNAL(timeout()),this,SLOT(startArrTimer()));
-    connect(arrTimer,SIGNAL(timeout()),this,SLOT(arrEvent()));
-    this->softDropArr = new QTimer(this);
-    this->softDropDas = new QTimer(this);
-    softDropDas->setSingleShot(true);
-    connect(softDropDas,SIGNAL(timeout()),this,SLOT(startSoftDropArrTimer()));
-    connect(softDropArr,SIGNAL(timeout()),this,SLOT(softDropArrEvent()));
+    this->lArrTimer = new QTimer(this);
+    this->lDasTimer = new QTimer(this);
+    this->rArrTimer = new QTimer(this);
+    this->rDasTimer = new QTimer(this);
+    this->dropTimer = new QTimer(this);
+    lDasTimer->setSingleShot(true);
+    rDasTimer->setSingleShot(true);
+    connect(lDasTimer,SIGNAL(timeout()),this,SLOT(startLarr()));
+    connect(rDasTimer,SIGNAL(timeout()),this,SLOT(startRarr()));
+
+    connect(lArrTimer,SIGNAL(timeout()),this,SLOT(leftEvent()));
+    connect(rArrTimer,SIGNAL(timeout()),this,SLOT(rightEvent()));
+
+    connect(dropTimer,SIGNAL(timeout()),this,SLOT(dropEvent()));
+
 }
 KeyPressManager::KeyPressManager():KeyPressManager(nullptr){};
 void KeyPressManager::keyPressHandler(QKeyEvent *ev)
 {
-    // qDebug()<<ev->key()<<" was pressed";
     if(ev->key() == this->drop){
         if(!ev->isAutoRepeat()){
-            this->softDropArrEvent();
-            softDropDas->start(dropDas);
+            this->dropEvent();
+            dropTimer->start(dropArr);
         }
     }else if(ev->key() == this->moveLeft){
-        this->eventType = MOVE_LEFT;
         if(!ev->isAutoRepeat()){
-            this->arrEvent();
-            dasTimer->start(das);
+            this->leftEvent();
+            lDasTimer->start(das);
         }
     }else if(ev->key() == this->moveRight){
-        this->eventType = MOVE_RIGHT;
         if(!ev->isAutoRepeat()){
-            this->arrEvent();
-            dasTimer->start(das);
+            this->rightEvent();
+            rDasTimer->start(das);
         }
     }else if(ev->key() == this->hardDrop){
         if(!ev->isAutoRepeat()){//防止长按一直转
@@ -50,40 +52,38 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
             window->geteTetro()->rigthRotate();
     }else if(ev->key() == this->pauseDropTimer) {
         if(!ev->isAutoRepeat()){
-            window->getGameMode().gravityToggle();
+        }
+    }else if(ev->key() == this->hold){
+        if(!ev->isAutoRepeat()){
+            window->hold();
         }
     }
+
 }
 
 void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
 {
     if(ev->key() == this->moveLeft){
         if(!ev->isAutoRepeat()){
-            this->arrTimer->stop();
-            if(this->dasTimer->isActive()){
-                this->dasTimer->stop();
+            this->lArrTimer->stop();
+            if(this->lDasTimer->isActive()){
+                this->lDasTimer->stop();
             }
         }
     }else if(ev->key() == this->moveRight){
         if(!ev->isAutoRepeat()){
-            this->arrTimer->stop();
-            if(this->dasTimer->isActive()){
-                this->dasTimer->stop();
+            this->rArrTimer->stop();
+            if(this->rDasTimer->isActive()){
+                this->rDasTimer->stop();
             }
         }
     }else if(ev->key() == this->drop){
         if(!ev->isAutoRepeat()){
-            this->softDropArr->stop();
-            if(this->softDropDas->isActive())
-                softDropDas->stop();
+            if(this->dropTimer->isActive())
+                dropTimer->stop();
         }
     }
 
-    else if(ev->key() == this->hold){
-        if(!ev->isAutoRepeat()){
-            window->hold();
-        }
-    }
 }
 
 void KeyPressManager::initSetting(SettingsManager *manager)
@@ -102,30 +102,30 @@ void KeyPressManager::initSetting(SettingsManager *manager)
     this->dropArr = manager->getDropArr();
 }
 
-void KeyPressManager::arrEvent()
+
+void KeyPressManager::startLarr()
 {
-    if(this->eventType == MOVE_LEFT){
-        window->geteTetro()->moveLeft();
-    }else {
-        window->geteTetro()->movRight();
-    }
+    this->lArrTimer->start(arr);
 }
 
-void KeyPressManager::startArrTimer()
+void KeyPressManager::startRarr()
 {
-    // qDebug()<<"in arr timer";
-    this->arrEvent();
-    this->arrTimer->start(arr);
+    this->rArrTimer->start(arr);
 }
 
-void KeyPressManager::softDropArrEvent()
+void KeyPressManager::leftEvent()
 {
-    window->geteTetro()->drop();
+      qDebug()<<"left event";
+    this->window->geteTetro()->moveLeft();
 }
 
-void KeyPressManager::startSoftDropArrTimer()
+void KeyPressManager::rightEvent()
 {
-    window->geteTetro()->drop();
-    this->softDropArr->start(dropArr);
+    qDebug()<<"r event";
+    this->window->geteTetro()->movRight();
+}
 
+void KeyPressManager::dropEvent()
+{
+    this->window->geteTetro()->drop();
 }

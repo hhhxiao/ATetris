@@ -5,9 +5,10 @@
 #include "tetromino/tetro.h"
 #include "QKeyEvent"
 #include "../seq/seq.h"
-#include "../mode/gamemode.h"
+#include "../mode/modebase.h"
 #include "../config/keypressmanager.h"
 #include "../widget/nextwindow.h"
+#include "../data/stat.h"
 #include <QTime>
 #include <QTimer>
 #include <QSet>
@@ -27,16 +28,20 @@ public:
     void wheelEvent(QWheelEvent * event);
     Tetromino* geteTetro();
     GameMap *getMap();
-    bool cheatEnable(){return  this->mode.cheatEnable();}
+    bool cheatEnable(){return  modeBase->cheatEnable();}
     QTimer* getDropTimer(){return  this->dropTimer; }
-    GameMode& getGameMode(){return this->mode;}
+    ModeBase* getGameMode(){return this->modeBase;}
     void hold();
     bool hasHold = false;
+    bool hasStart;
 public slots:
     void geneNewTetro();
     void drop();
     void enableHold(){this->hasHold = false;}
     void updateTime();
+    void statistic(int);
+    void gameStart();
+    void gameStop(bool);
 private slots:
     void on_startBtn_clicked();
 
@@ -45,12 +50,13 @@ private:
     GameMap *map;
     Tetromino *tetro;
     QTimer *dropTimer;
-    GameMode mode;
+    ModeBase *modeBase;
     KeyPressManager *keyManager;
     QVector<NextWindow*> nextWindows;
     NextWindow* holdWindow;
     QTimer *stopwatch;
-    QTime *time;
+    QTime time;
+    GameStat *stat;
   //  StatisticsPanel *panel;
 
 };

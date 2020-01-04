@@ -28,14 +28,18 @@ const int C::CLOCK_WISE = 1;
 const int C::CLOCK_ANTI_WISE = 0;
 
 //line clear
+const int C::NO_CLEAR = 0;
 const int C::SINGLE = 1;
 const int C::DOUBLE = 2;
 const int C::TRIGLE = 3;
 const int C::TETRIS = 4;
 
+const int C::T_SPIN_SINGLE = 6;
+const int C::T_SPIN_DOUBLE = 7;
+const int C::T_SPIN_TRIGLE =8;
+const int C::T_SPIN_MINI = 11;
 //tspin
 const int C::NO_SPIN = 0;
-const int C::T_SPIN_MINI = 1;
 const int C::T_SPIN = 2;
 const bool C::MOVE = false;
 const bool C::ROTATION = true;
@@ -53,6 +57,16 @@ const QMap<int,QColor> C::BLOCK_COLOR_LIST = {
     {C::EMPTY,  QColor(40,40,40,30)}
 };
 
+const QMap<int,QString> C::LINE_CLEAR_TYPE = {
+    {1,"single"},
+    {2,"double"},
+    {3,"trigle"},
+    {4,"tetris"},
+    {6,"tss"},
+    {7,"tsd"},
+    {8,"tst"},
+    {11,"t mini"}
+};
 
 //SRS(super rotation system) data support
 const QVector<QVector<QPoint>> C::OTHER_WALL_KICK_LIST = {

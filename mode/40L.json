@@ -1,0 +1,18 @@
+{
+    "name": "40L",
+    "speed": 1,
+    "hold": true,
+    "cheat": false,
+    "filter":[
+    ],
+    "map": [],
+    "goal": {
+        "name": "clearLine",
+        "num": 40
+    },
+    "seq":{
+        "name":"7-bag",
+        "seed":0,
+        "seq":[]
+    }
+}
