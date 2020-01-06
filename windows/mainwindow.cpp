@@ -4,36 +4,21 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    this->keyManager = new KeyPressManager();
     this->settingManager = new SettingsManager();
-    this->keyManager->initSetting(settingManager);
     ui->setupUi(this);
 }
 
 MainWindow::~MainWindow()
 {
     delete modeWindow;
-    delete startWindow;
-    delete settingWindow;
     delete ui;
 }
 
-void MainWindow::on_beginGame_clicked()
-{
-    this->startWindow = new StartWindow(this->keyManager);
-    startWindow->show();
-   // this->close();
-}
-void MainWindow::on_test_clicked()
-{
-
-
-}
 
 void MainWindow::on_settingButton_clicked()
 {
-    this->settingWindow = new SettingsWidnow(this->settingManager);
-    settingWindow->show();
+    this->settingDialog = new SettingDialog(this->settingManager);
+    settingDialog->show();
 
 }
 
@@ -41,4 +26,37 @@ void MainWindow::on_modeCreatorButton_clicked()
 {
     this->modeWindow = new ModeWindow();
     modeWindow->show();
+}
+
+void MainWindow::on_maraBtn_clicked()
+{
+
+}
+
+void MainWindow::on_c4wBtn_clicked()
+{
+
+         ModeBase *base =  new C4wMode();
+         SingleGameWindow *game = new SingleGameWindow(base);
+          game->show();
+}
+
+void MainWindow::on_FortyBtn_clicked()
+{
+        ModeBase *base =  new FortyMode();
+       SingleGameWindow *game = new SingleGameWindow(base);
+        game->show();
+}
+
+bool MainWindow::checkWindowOpen()
+{
+        QMessageBox *msgBox;
+        msgBox = new QMessageBox("通知",
+            "已经有一个窗口在运行",
+            QMessageBox::Critical,
+            QMessageBox::Ok | QMessageBox::Default,
+            QMessageBox::Cancel | QMessageBox::Escape,
+            0);
+        msgBox->show();
+        return true;
 }

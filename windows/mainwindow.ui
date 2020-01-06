@@ -14,30 +14,17 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="beginGame">
+   <widget class="QPushButton" name="FortyBtn">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>50</x>
       <y>60</y>
       <width>191</width>
       <height>71</height>
      </rect>
     </property>
     <property name="text">
-     <string>begin</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="test">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>170</y>
-      <width>191</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>testButton</string>
+     <string>40L</string>
     </property>
    </widget>
    <widget class="QPushButton" name="settingButton">
@@ -64,6 +51,32 @@
     </property>
     <property name="text">
      <string>游戏模式编辑器</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="maraBtn">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>60</y>
+      <width>191</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>马拉松</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="c4wBtn">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>60</y>
+      <width>191</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>C4W练习</string>
     </property>
    </widget>
   </widget>

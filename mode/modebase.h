@@ -4,23 +4,26 @@
 #include "../data/stat.h"
 #include "../tetromino/tetro.h"
 #include "../seq/seq.h"
+class SingleGameWindow;
 class ModeBase
 {
 protected:
     SeqBase *seq;
-    GameStat *stat;
     QString modeName;
+    SingleGameWindow *window;
 public:
     ModeBase()=default;
+    virtual ~ModeBase(){delete seq;}
     QString getName(){return  this->modeName;}
-    void setStat(GameStat *s){this->stat = s;}
     SeqBase* getSeq(){return  seq;}
-    virtual bool cheatEnable() = 0;
-    virtual int dropSpeed() = 0;
-    virtual bool gameWin(const GameMap&)= 0;
-    virtual bool gameLose(const GameMap&)=0;
-    virtual bool holdEnable()=0;
-    virtual Grid<int> initMap()=0;
+    void setStartWindow(SingleGameWindow *w){this->window = w;}
+
+    //listener
+    virtual void gameinitListener()=0;
+    virtual void gameStartListener()=0;
+    virtual bool gameWinListener()= 0;
+    virtual bool gameLoseListener()=0;
+    virtual void statUpdateListener()=0;
 };
 
 #endif // MODEBASE_H

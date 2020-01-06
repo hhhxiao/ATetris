@@ -1,11 +1,13 @@
 #include "keypressmanager.h"
-#include "../windows/startwindow.h"
-void KeyPressManager::setWindow(StartWindow *window){
-    this->window = window;
+#include "../widget/gamewidget.h"
+
+void KeyPressManager::setGameWidget(GameWidget *widget)
+{
+    this->gameWidget = widget;
+    loadSettings();
 }
 
-KeyPressManager::KeyPressManager(StartWindow *win){
-    this->window = win;
+KeyPressManager::KeyPressManager(){
     this->lArrTimer = new QTimer(this);
     this->lDasTimer = new QTimer(this);
     this->rArrTimer = new QTimer(this);
@@ -22,62 +24,80 @@ KeyPressManager::KeyPressManager(StartWindow *win){
     connect(dropTimer,SIGNAL(timeout()),this,SLOT(dropEvent()));
 
 }
-KeyPressManager::KeyPressManager():KeyPressManager(nullptr){};
+
+void KeyPressManager::loadSettings()
+{
+    /**QMap<QString,int> C::KEY_MAP = {
+    {"moveLeft",Qt::Key_Left},
+    {"moveRight",Qt::Key_Right},
+    {"leftRotate",Qt::Key_Z},
+    {"rightRotate",Qt::Key_X},
+    {"hardDrop",Qt::Key_Space},
+    {"softDrop",Qt::Key_Down},
+    {"hold",Qt::Key_Shift},
+    {"arr",20},
+    {"das",20},
+    {"dropArr",20},
+    {"lockTime",20}
+};
+      */
+    arr =  C::KEY_MAP["arr"];
+    das = C::KEY_MAP["das"];
+    dropArr = C::KEY_MAP["dropArr"];
+
+    leftMoveKey = C::KEY_MAP["moveLeft"];
+    rightMoveKey = C::KEY_MAP["moveRight"];
+    leftRotateKey = C::KEY_MAP["leftRotate"];
+    rightRotateKey= C::KEY_MAP["rightRotate"];
+    holdKey = C::KEY_MAP["hold"];
+    softDropKey = C::KEY_MAP["softDrop"];
+    hardDropKey = C::KEY_MAP["hardDrop"];
+}
+
 void KeyPressManager::keyPressHandler(QKeyEvent *ev)
 {
-    if(ev->key() == this->drop){
-        if(!ev->isAutoRepeat()){
-            this->dropEvent();
-            dropTimer->start(dropArr);
+    if(!ev->isAutoRepeat()){
+        if(ev->key() == softDropKey){
+                this->dropEvent();
+                dropTimer->start(dropArr);
+        }else if(ev->key() == leftMoveKey){
+                this->leftEvent();
+                lDasTimer->start(das);
+        }else if(ev->key() == rightMoveKey){
+                this->rightEvent();
+                rDasTimer->start(das);
+        }else if(ev->key() == hardDropKey){
+                gameWidget->hardrop();
+        }else if(ev->key() == leftRotateKey){
+                gameWidget->lRotate();
+        }else if(ev->key() == rightRotateKey){
+                gameWidget->rRotate();
         }
-    }else if(ev->key() == this->moveLeft){
-        if(!ev->isAutoRepeat()){
-            this->leftEvent();
-            lDasTimer->start(das);
-        }
-    }else if(ev->key() == this->moveRight){
-        if(!ev->isAutoRepeat()){
-            this->rightEvent();
-            rDasTimer->start(das);
-        }
-    }else if(ev->key() == this->hardDrop){
-        if(!ev->isAutoRepeat()){//防止长按一直转
-            window->geteTetro()->hardDrop();
-        }
-    }else if(ev->key() == this->leftRotate){
-        if(!ev->isAutoRepeat())//防止长按一直转
-            window->geteTetro()->leftRotate();
-    }else if(ev->key() == this->rightRotate){
-        if(!ev->isAutoRepeat())//防止长按一直转
-            window->geteTetro()->rigthRotate();
-    }else if(ev->key() == this->pauseDropTimer) {
-        if(!ev->isAutoRepeat()){
-        }
-    }else if(ev->key() == this->hold){
-        if(!ev->isAutoRepeat()){
-            window->hold();
+        //else if(ev->key() == this->pauseDropTimer) {
+        //}
+        else if(ev->key() == holdKey){
+                gameWidget->hold();
         }
     }
-
 }
 
 void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
 {
-    if(ev->key() == this->moveLeft){
+    if(ev->key() == leftMoveKey){
         if(!ev->isAutoRepeat()){
             this->lArrTimer->stop();
             if(this->lDasTimer->isActive()){
                 this->lDasTimer->stop();
             }
         }
-    }else if(ev->key() == this->moveRight){
+    }else if(ev->key() == rightMoveKey){
         if(!ev->isAutoRepeat()){
             this->rArrTimer->stop();
             if(this->rDasTimer->isActive()){
                 this->rDasTimer->stop();
             }
         }
-    }else if(ev->key() == this->drop){
+    }else if(ev->key() == softDropKey){
         if(!ev->isAutoRepeat()){
             if(this->dropTimer->isActive())
                 dropTimer->stop();
@@ -86,46 +106,15 @@ void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
 
 }
 
-void KeyPressManager::initSetting(SettingsManager *manager)
-{
-    this->hardDrop = manager->getBindingKey("hardDrop");
-    this->moveLeft = manager->getBindingKey("moveLeft");
-    this->moveRight = manager->getBindingKey("moveRight");
-    this->drop = manager->getBindingKey("softDrop");
-    this->leftRotate = manager->getBindingKey("leftRotate");
-    this->rightRotate = manager->getBindingKey("rightRotate");
-    this->pauseDropTimer = manager->getBindingKey("pause");
-    this->hold = manager->getBindingKey("hold");
-    this->das = manager->getDas();
-    this->arr = manager->getArr();
-    this->dropDas = manager->getDropDas();
-    this->dropArr = manager->getDropArr();
-}
+void KeyPressManager::wheelEventHandler(QWheelEvent *ev){}
 
 
-void KeyPressManager::startLarr()
-{
-    this->lArrTimer->start(arr);
-}
+void KeyPressManager::startLarr(){ this->lArrTimer->start(arr);}
 
-void KeyPressManager::startRarr()
-{
-    this->rArrTimer->start(arr);
-}
+void KeyPressManager::startRarr(){this->rArrTimer->start(arr);}
 
-void KeyPressManager::leftEvent()
-{
-      qDebug()<<"left event";
-    this->window->geteTetro()->moveLeft();
-}
+void KeyPressManager::leftEvent(){gameWidget->moveLeft();}
 
-void KeyPressManager::rightEvent()
-{
-    qDebug()<<"r event";
-    this->window->geteTetro()->movRight();
-}
+void KeyPressManager::rightEvent(){gameWidget->moveRight();}
 
-void KeyPressManager::dropEvent()
-{
-    this->window->geteTetro()->drop();
-}
+void KeyPressManager::dropEvent(){gameWidget->drop();}

@@ -7,7 +7,15 @@
 class C
 {
 public:
-    static const int WIDTH;   
+
+    static QMap<QString,int> KEY_MAP;
+
+    static int SCREEN_WIDTH;
+    static int SCREEN_HEIGHT;
+
+    static int WIDTH;
+
+    //const value
     static const int I_BLOCK;
     static const int T_BLOCK;
     static const int L_BLOCK;

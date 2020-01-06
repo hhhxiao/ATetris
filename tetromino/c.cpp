@@ -1,5 +1,27 @@
 #include "c.h"
 
+
+
+QMap<QString,int> C::KEY_MAP = {
+    {"moveLeft",Qt::Key_Left},
+    {"moveRight",Qt::Key_Right},
+    {"leftRotate",Qt::Key_Z},
+    {"rightRotate",Qt::Key_X},
+    {"hardDrop",Qt::Key_Space},
+    {"softDrop",Qt::Key_Down},
+    {"hold",Qt::Key_Shift},
+    {"arr",20},
+    {"das",20},
+    {"dropArr",20},
+    {"lockTime",20}
+};
+
+int C::SCREEN_WIDTH = 1920;
+int C::SCREEN_HEIGHT = 1080;
+
+
+
+
 //tetrominpo type
 const int C::I_BLOCK = 1;
 const int C::T_BLOCK = 2;
@@ -22,7 +44,7 @@ const int C::DIR_R = 3;
 //map
 const int C::MAP_WIDTH = 10;
 const int C::MAP_HEIGHT = 40;
-const int C::WIDTH = 35;
+int C::WIDTH = 35;
 
 const int C::CLOCK_WISE = 1;
 const int C::CLOCK_ANTI_WISE = 0;
@@ -54,7 +76,7 @@ const QMap<int,QColor> C::BLOCK_COLOR_LIST = {
     {C::O_BLOCK,QColor(255,215,0)},
     {C::T_BLOCK,QColor(148,0,211)},
     {C::GARBAGE,Qt::darkGray},
-    {C::EMPTY,  QColor(40,40,40,30)}
+    {C::EMPTY,  QColor(20,20,20)}
 };
 
 const QMap<int,QString> C::LINE_CLEAR_TYPE = {

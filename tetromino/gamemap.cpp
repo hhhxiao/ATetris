@@ -6,7 +6,8 @@ GameMap::GameMap(QWidget *parent, int width, int height)
     : QWidget(parent),width(width),height(height)
 {
     this->grids = new Grid<int>(width,height,C::EMPTY);
-    this->setGeometry(130,-this->height/2*C::WIDTH,width * C::WIDTH,height*C::WIDTH);
+    //this->setFixedSize(C::WIDTH * 10,C::WIDTH*20);
+    this->setGeometry(C::WIDTH*6,C::WIDTH-this->height/2*C::WIDTH,width * C::WIDTH,height*C::WIDTH);
     setMouseTracking(true);
 }
 

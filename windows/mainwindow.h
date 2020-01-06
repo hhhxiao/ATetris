@@ -2,12 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "startwindow.h"
-#include "settingsWindow.h"
+#include "singlegamewindow.h"
+#include "settingdialog.h"
 #include "modewindow.h"
 #include "./config/settingsmanager.h"
 #include "./config/keypressmanager.h"
+#include  "./mode/c4wmode.h"
 #include <QLineEdit>
+#include <QMessageBox>
 namespace Ui {
 class MainWindow;
 }
@@ -22,17 +24,21 @@ public:
 
 
 private slots:
-    void on_beginGame_clicked();
-    void on_test_clicked();
     void on_settingButton_clicked();
+
     void on_modeCreatorButton_clicked();
 
+    void on_maraBtn_clicked();
+
+    void on_c4wBtn_clicked();
+
+    void on_FortyBtn_clicked();
+
 private:
-    KeyPressManager *keyManager;
+    bool checkWindowOpen();
     SettingsManager *settingManager;
     Ui::MainWindow *ui;
-    StartWindow *startWindow;
-    SettingsWidnow *settingWindow;
+    SettingDialog *settingDialog;
     ModeWindow *modeWindow;
 
 };

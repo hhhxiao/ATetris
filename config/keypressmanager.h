@@ -8,40 +8,39 @@
 
 //这里的按键检测代码能简化
 
-class StartWindow;
-enum ArrEventType{MOVE_LEFT,MOVE_RIGHT};
+class SingleGameWindow;
+class GameWidget;
 class KeyPressManager: public QObject
 {
     Q_OBJECT
 private:
-    StartWindow *window;
+    GameWidget *gameWidget;
     int das = 100;
     int arr = 20;
-    int dropArr = 100;
-    int dropDas = 20;
-
-
-
-    int hardDrop = Qt::Key_Space;
-    int moveRight = Qt::Key_Right;
-    int moveLeft = Qt::Key_Left;
-    int drop = Qt::Key_Down;
-    int leftRotate = Qt::Key_Z;
-    int rightRotate = Qt::Key_X;
-    int pauseDropTimer = Qt::Key_P;
-    int hold = Qt::Key_Shift;
+    int dropArr = 10;
 
 
     QTimer *lDasTimer,*lArrTimer;
     QTimer *rDasTimer,*rArrTimer;
     QTimer *dropTimer;
+
+    int leftMoveKey = Qt::Key_Left;
+    int rightMoveKey = Qt::Key_Right;
+    int leftRotateKey = Qt::Key_X ;
+    int rightRotateKey = Qt::Key_Z;
+    int holdKey = Qt::Key_Shift;
+    int softDropKey = Qt::Key_Down;
+    int hardDropKey = Qt::Key_Space;
+
 public:
-    void setWindow(StartWindow *window);
-    KeyPressManager(StartWindow *window);
+
+    void setGameWidget(GameWidget *widget);
+    KeyPressManager(SingleGameWindow *window);
     KeyPressManager();
+    void loadSettings();
     void keyPressHandler(QKeyEvent *ev);
     void keyReleaseHanler(QKeyEvent *ev);
-    void initSetting(SettingsManager *manager);
+    void wheelEventHandler(QWheelEvent *ev);
 
 public slots:
     void startLarr();

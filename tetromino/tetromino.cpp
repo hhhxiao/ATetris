@@ -184,7 +184,7 @@ void Tetromino::moveLeft()
 }
 
 //右移
-void Tetromino::movRight()
+void Tetromino::moveRight()
 {
     if(positionValid(*gameMap,*blocks,x+1,y))
     {

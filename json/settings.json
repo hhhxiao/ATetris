@@ -1,22 +1,13 @@
 {
-    "keyBinding": {
-        "hardDrop": "Space",
-        "hold": "Shift",
-        "leftRotate": "Z",
-        "moveLeft": "Left",
-        "moveRight": "Right",
-        "pause": "P",
-        "rightRotate": "X",
-        "softDrop": "Down"
-    },
-    "sensitivity": {
-        "arr": 15,
-        "das": 120,
-        "dropArr": 10,
-        "dropDas": 10,
-        "lockTime": 500
-    }
+    "arr": 20,
+    "das": 90,
+    "dropArr": 10,
+    "hardDrop": 32,
+    "hold": 16777248,
+    "leftRotate": 90,
+    "lockTime": 9,
+    "moveLeft": 16777234,
+    "moveRight": 16777236,
+    "rightRotate": 88,
+    "softDrop": 16777237
 }
-
-
-

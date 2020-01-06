@@ -29,21 +29,7 @@ protected:
     Grid<bool> *blocks;
     int lastTestNumber = -1;
 
-public:
-    void paintEvent(QPaintEvent *);
-
-    //constructor
-    Tetromino(int type,GameMap *map, QWidget *parent);
-    ~Tetromino();
     void init();
-    void reset(int type);
-    //operator
-    void moveLeft();
-    void movRight();
-    void hardDrop();
- //   bool  moveable(MoveDirect direct);
-    void rigthRotate();
-    void leftRotate();
     void relive(){
         if(this->lifeTimer->isActive())
             // qDebug()<<"关闭死亡定时器";
@@ -52,12 +38,25 @@ public:
         //qDebug()<<"又活了!!";
     }
 
+    int getGhostY();
+    int tspinCheck();
+public:
+    void paintEvent(QPaintEvent *);
+    //constructor
+    Tetromino(int type,GameMap *map, QWidget *parent);
+    ~Tetromino();
+
+    void reset(int type);
+    //operator
+    void moveLeft();
+    void moveRight();
+    void hardDrop();
+ //   bool  moveable(MoveDirect direct);
+    void rigthRotate();
+    void leftRotate();
     int getType(){
         return this->type;
     }
-
-    int getGhostY();
-    int tspinCheck();
     QPair<int,QPoint> rotateTest(int rotationAngle);
     QVector<QPoint> readPoint(int rotationAngle);
     void setPos(int x,int y){this->x = x;this->y = y;repaint();}
