@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QMap>
 #include <QPoint>
+#include <QPixmap>
 
 class C
 {
@@ -14,7 +15,6 @@ public:
     static int SCREEN_HEIGHT;
 
     static int WIDTH;
-
     //const value
     static const int I_BLOCK;
     static const int T_BLOCK;
@@ -56,6 +56,7 @@ public:
     static const QVector<QVector<QPoint>> OTHER_WALL_KICK_LIST;
 
     static const QMap<int,QString> LINE_CLEAR_TYPE;
+
 };
 
 

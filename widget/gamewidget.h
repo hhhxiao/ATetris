@@ -22,6 +22,7 @@ class GameWidget : public QWidget
 {
     Q_OBJECT
 private:
+    QPixmap *bg;
     GameMap *gameMap;
     Tetromino *mino;
     QVector<NextWindow *> nextWindows;
@@ -35,6 +36,7 @@ private:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    void paintEvent(QPaintEvent *);
 
 private slots:
     void enableHold(){this->hasHold = false;}

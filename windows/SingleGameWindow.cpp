@@ -7,6 +7,14 @@ SingleGameWindow::SingleGameWindow(ModeBase *base,QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setAutoFillBackground(true);
+    QPalette palette = this->palette();
+    palette.setBrush(QPalette::Window,
+                     QBrush(QPixmap(":/theme/theme/gbg.png").scaled(
+                                this->size(),
+                                Qt::IgnoreAspectRatio,
+                                Qt::SmoothTransformation)));
+    this->setPalette(palette);
     overDialog = new GameOverDialog(this);
     dropTimer = new QTimer(this);
     widget = new GameWidget(base->getSeq(),this);
@@ -58,7 +66,7 @@ void SingleGameWindow::start()
 {
     widget->getGameMap()->setFocus();
     base->gameStartListener();
-    dropTimer->start(1000);
+   // dropTimer->start(1000);
     stopWatchTimer->start(1000);
 }
 

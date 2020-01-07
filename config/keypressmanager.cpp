@@ -13,6 +13,10 @@ KeyPressManager::KeyPressManager(){
     this->rArrTimer = new QTimer(this);
     this->rDasTimer = new QTimer(this);
     this->dropTimer = new QTimer(this);
+    lArrTimer->setTimerType(Qt::PreciseTimer);
+    lDasTimer->setTimerType(Qt::PreciseTimer);
+    rArrTimer->setTimerType(Qt::PreciseTimer);
+    rDasTimer->setTimerType(Qt::PreciseTimer);
     lDasTimer->setSingleShot(true);
     rDasTimer->setSingleShot(true);
     connect(lDasTimer,SIGNAL(timeout()),this,SLOT(startLarr()));
@@ -61,9 +65,18 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
                 this->dropEvent();
                 dropTimer->start(dropArr);
         }else if(ev->key() == leftMoveKey){
+                if(rDasTimer->isActive())
+                    rDasTimer->stop();
+                if(rArrTimer->isActive())
+                    rArrTimer->stop();
+
                 this->leftEvent();
                 lDasTimer->start(das);
         }else if(ev->key() == rightMoveKey){
+            if(lDasTimer->isActive())
+                lDasTimer->stop();
+            if(lArrTimer->isActive())
+                lArrTimer->stop();
                 this->rightEvent();
                 rDasTimer->start(das);
         }else if(ev->key() == hardDropKey){

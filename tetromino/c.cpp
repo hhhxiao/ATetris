@@ -90,6 +90,11 @@ const QMap<int,QString> C::LINE_CLEAR_TYPE = {
     {11,"t mini"}
 };
 
+//theme
+
+
+
+
 //SRS(super rotation system) data support
 const QVector<QVector<QPoint>> C::OTHER_WALL_KICK_LIST = {
     { QPoint( 0, 0) ,QPoint	(+1, 0)  ,QPoint(+1,+1)  ,QPoint( 0,-2) ,QPoint	(+1,-2)},//0-L(1) 逆时针

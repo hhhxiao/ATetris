@@ -66,6 +66,7 @@ Grid<bool>* Tetromino::createBlocks( int type,int &x)
 
 
 //根据方块的类型重置方块
+
 void Tetromino::init()
 {
     this->state = C::DIR_0;
@@ -152,8 +153,8 @@ void Tetromino::paintEvent(QPaintEvent *)
     QPainter painter(this);
     QPen pen; //画笔
     pen.setColor(C::BLOCK_COLOR_LIST[this->type]);
-    pen.setWidth(2);
-    QBrush brush(C::BLOCK_COLOR_LIST[this->type]); //画刷
+    pen.setWidth(3);
+ //   QBrush brush(C::BLOCK_COLOR_LIST[this->type]); //画刷
     painter.setPen(pen); //添加画笔
   //  painter.drawRect(x*C::WIDTH,y*C::WIDTH,blocks->getWidth()*C::WIDTH,blocks->getHeight()*C::WIDTH);
 
@@ -163,11 +164,13 @@ void Tetromino::paintEvent(QPaintEvent *)
             painter.drawRect((x+dx)*C::WIDTH,(ghostY+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
 
     });
-    painter.setBrush(brush); //添加画刷
+//    blocks->each([&painter,this](int dx,int dy,bool value){
+//        if(value)
+//            painter.drawRect((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
+//    });
     blocks->each([&painter,this](int dx,int dy,bool value){
         if(value)
-            painter.drawRect((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
-
+            painter.drawPixmap((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH,*MINO_TEXTURE[this->type]);
     });
 }
 
@@ -312,6 +315,30 @@ bool Tetromino::positionValid(const GameMap &map, Grid<bool> &grids,int x,int y)
         }
     });
     return result;
+}
+
+QMap<int,QPixmap*> Tetromino::MINO_TEXTURE = {};
+void Tetromino::loadTextures()
+{
+    QPixmap *p1 = new QPixmap(":/theme/theme/I.png");
+    QPixmap *p2 = new QPixmap(":/theme/theme/T.png");
+    QPixmap *p3 = new QPixmap(":/theme/theme/O.png");
+    QPixmap *p4 = new QPixmap(":/theme/theme/S.png");
+    QPixmap *p5 = new QPixmap(":/theme/theme/Z.png");
+    QPixmap *p6 = new QPixmap(":/theme/theme/J.png");
+    QPixmap *p7 = new QPixmap(":/theme/theme/L.png");
+    QPixmap *p8 = new QPixmap(":/theme/theme/EMP.png");
+    QPixmap *p9 = new QPixmap(":/theme/theme/GAB.png");
+    MINO_TEXTURE.insert(C::I_BLOCK,p1);
+    MINO_TEXTURE.insert(C::T_BLOCK,p2);
+    MINO_TEXTURE.insert(C::O_BLOCK,p3);
+    MINO_TEXTURE.insert(C::S_BLOCK,p4);
+    MINO_TEXTURE.insert(C::Z_BLOCK,p5);
+    MINO_TEXTURE.insert(C::J_BLOCK,p6);
+    MINO_TEXTURE.insert(C::L_BLOCK,p7);
+
+    MINO_TEXTURE.insert(C::EMPTY,p8);
+    MINO_TEXTURE.insert(C::GARBAGE,p9);
 }
 
 

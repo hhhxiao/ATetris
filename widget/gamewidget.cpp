@@ -2,6 +2,16 @@
 
 GameWidget::GameWidget(SeqBase *seqBase,QWidget *parent) : QWidget(parent)
 {
+//    this->setAutoFillBackground(true);
+//    QPalette palette = this->palette();
+//    palette.setBrush(QPalette::Window,
+//                     QBrush(QPixmap(":/theme/theme/gameBg.png").scaled(
+//                                this->size(),
+//                                Qt::IgnoreAspectRatio,
+//                                Qt::SmoothTransformation)));
+    bg = new QPixmap();
+    bg->load(":/theme/theme/gameBg.png");
+
     this->seq = seqBase;
     this->setFixedSize(C::WIDTH*22,C::WIDTH*22);
     gameMap = new GameMap(this);
@@ -44,6 +54,12 @@ void GameWidget::keyPressEvent(QKeyEvent *event){if(keyManager)keyManager->keyPr
 void GameWidget::keyReleaseEvent(QKeyEvent *event){if(keyManager)keyManager->keyReleaseHanler(event);}
 
 void GameWidget::wheelEvent(QWheelEvent *event){if(keyManager)keyManager->wheelEventHandler(event);}
+
+void GameWidget::paintEvent(QPaintEvent *)
+{
+    QPainter p(this);
+    p.drawPixmap(0,0,C::WIDTH*22,C::WIDTH*22,*bg);
+}
 
 void GameWidget::geneNewMino()
 {

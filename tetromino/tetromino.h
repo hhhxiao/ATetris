@@ -14,8 +14,10 @@ class Tetromino : public QWidget
 {
     Q_OBJECT
 public:
-
+    static QMap<int,QPixmap*> MINO_TEXTURE;
+    static void loadTextures();
 protected:
+
 
     int type;
     int deathDelay = 800;
@@ -73,4 +75,6 @@ signals:
     //第三个点位是固定位对应的方块情况是否是101
     void death(int); //死亡信号
 };
+
+
 #endif // TETROMINO_H

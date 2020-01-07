@@ -38,6 +38,7 @@ SOURCES += \
     windows/singlegamewindow.cpp
 
 HEADERS += \
+    ai/coldclear.h\
     config/keypressmanager.h \
     config/settingsmanager.h \
     data/stat.h \
@@ -67,6 +68,7 @@ FORMS += \
     windows/settingdialog.ui \
     windows/singlegamewindow.ui
 
+LIBS += -L$$PWD/libs -lcold_clear
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -75,7 +77,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     README.md \
-    json/settings.json
+    json/settings.json \
+    theme/gbg.png
 
 RESOURCES += \
     res.qrc
+

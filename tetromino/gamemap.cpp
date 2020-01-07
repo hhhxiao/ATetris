@@ -1,5 +1,5 @@
 #include "gamemap.h"
-
+#include "tetromino.h"
 
 
 GameMap::GameMap(QWidget *parent, int width, int height)
@@ -48,22 +48,23 @@ GameMap::~GameMap(){delete grids;}
 void GameMap::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    QPen pen;
-    QBrush brush(Qt::SolidPattern);
-    this->grids->each([this,&painter,&pen,&brush](int x,int y,int tetroType){
-        pen.setColor(C::BLOCK_COLOR_LIST[tetroType]);
-        brush.setColor(C::BLOCK_COLOR_LIST[tetroType]);
-        painter.setPen(pen);
-        painter.setBrush(brush);
-        if(y >= this->height/2)
-            painter.drawRect(x*C::WIDTH,y*C::WIDTH,C::WIDTH,C::WIDTH);
+//    QPen pen;
+//    QBrush brush(Qt::SolidPattern);
+    this->grids->each([this,&painter](int x,int y,int tetroType){
+//        pen.setColor(C::BLOCK_COLOR_LIST[tetroType]);
+//        brush.setColor(C::BLOCK_COLOR_LIST[tetroType]);
+//        painter.setPen(pen);
+//        painter.setBrush(brush);
+        if(y >= this->height/2){
+              painter.drawPixmap(x*C::WIDTH,y*C::WIDTH,C::WIDTH,C::WIDTH,*Tetromino::MINO_TEXTURE[tetroType]);
+        }
     });
 }
 
 //only dislable cheat
 void GameMap::mousePressEvent(QMouseEvent *e)
 {
-    if(this->editAble){
+ //   if(this->editAble){
         int grid_x = e->pos().x() / C::WIDTH;
         int grid_y = e->pos().y() / C::WIDTH;
         if(!outOfRange(grid_x,grid_y)){
@@ -75,7 +76,7 @@ void GameMap::mousePressEvent(QMouseEvent *e)
             update();
         }
 
-    }
+   // }
 
 }
 

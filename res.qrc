@@ -1,5 +1,17 @@
 <RCC>
-    <qresource prefix="/"/>
+    <qresource prefix="/theme">
+        <file>theme/gbg.png</file>
+        <file>theme/gameBg.png</file>
+        <file>theme/I.png</file>
+        <file>theme/J.png</file>
+        <file>theme/L.png</file>
+        <file>theme/O.png</file>
+        <file>theme/S.png</file>
+        <file>theme/T.png</file>
+        <file>theme/Z.png</file>
+        <file>theme/EMP.png</file>
+        <file>theme/GAB.png</file>
+    </qresource>
     <qresource prefix="/style">
         <file>style/add-line_horizontal.png</file>
         <file>style/add-line_vertical.png</file>

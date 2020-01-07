@@ -1,5 +1,5 @@
 #include "nextwindow.h"
-
+#include "tetromino/tetromino.h"
 NextWindow::NextWindow(QWidget *parent,int type):QWidget(parent)
 {
     int offset;
@@ -15,7 +15,7 @@ void NextWindow::paintEvent(QPaintEvent *)
     brush.setStyle(Qt::SolidPattern);
     painter.setBrush(brush);
     blocks->each([this,&painter](int dx,int dy,bool value){
-        if(value)painter.drawRect(dx*width,dy*width,width,width);
+        if(value)painter.drawPixmap(dx*width,dy*width,width,width,*Tetromino::MINO_TEXTURE[type]);
     });
 }
 

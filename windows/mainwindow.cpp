@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     this->settingManager = new SettingsManager();
+     Tetromino::loadTextures();
     ui->setupUi(this);
 }
 
