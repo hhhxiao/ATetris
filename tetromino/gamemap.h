@@ -7,6 +7,7 @@
 #include "c.h"
 #include <QtDebug>
 #include<QMouseEvent>
+#include <random>
 class GameMap : public QWidget
 {
     Q_OBJECT
@@ -17,6 +18,7 @@ protected:
        bool editAble = false;
        QPoint bwginPoint;
        QPoint endPoint;
+       bool spAttack;
        int continusCombo = 0;
 public:
     void paintEvent(QPaintEvent *);
@@ -34,10 +36,13 @@ public:
     ~GameMap();
 public slots:
     void clearLine(int);
+    void addGarbageLine(int);
+    void syncMap(bool *map);
 signals:
     void attack(int);
     void lineSignal(int);
     void ren(int);
+
 };
 
 #endif // GAMEMAP_H

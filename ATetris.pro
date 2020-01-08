@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    ai/ccbot.cpp \
     mode/c4wmode.cpp \
     mode/fortymode.cpp \
     mode/marathonmode.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     config/keypressmanager.cpp \
     config/settingsmanager.cpp \
     main.cpp \
+    windows/botbattle.cpp \
     windows/gameoverdialog.cpp \
     windows/mainwindow.cpp \
     seq/seq.cpp \
@@ -38,6 +40,7 @@ SOURCES += \
     windows/singlegamewindow.cpp
 
 HEADERS += \
+    ai/ccbot.h \
     ai/coldclear.h\
     config/keypressmanager.h \
     config/settingsmanager.h \
@@ -49,6 +52,7 @@ HEADERS += \
     widget/bloodbar.h \
     widget/gamewidget.h \
     widget/nextwindow.h\
+    windows/botbattle.h \
     windows/gameoverdialog.h \
     windows/mainwindow.h \
     seq/seq.h \
@@ -62,6 +66,7 @@ HEADERS += \
     windows/singlegamewindow.h
 
 FORMS += \
+    windows/botbattle.ui \
     windows/gameoverdialog.ui \
     windows/mainwindow.ui \
     windows/modewindow.ui \

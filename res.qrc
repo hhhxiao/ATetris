@@ -32,6 +32,5 @@
         <file>style/radio_selected.png</file>
         <file>style/sub-line_horizontal.png</file>
         <file>style/sub-line_vertical.png</file>
-        <file>style/simhei.ttf</file>
     </qresource>
 </RCC>

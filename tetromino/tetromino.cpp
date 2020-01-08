@@ -70,9 +70,20 @@ Grid<bool>* Tetromino::createBlocks( int type,int &x)
 void Tetromino::init()
 {
     this->state = C::DIR_0;
-    this->y = 19;
+    this->y = 18;
     this->willDeath = false;
     this->blocks = createBlocks(this->type,this->x);
+    bool success = true;
+    blocks->each([&success,this](int dx,int dy,bool value){
+        if(value && gameMap->get(x+dx,y+dy) != C::EMPTY){
+            success = false;
+            return ;
+        }
+    });
+    if(!success){
+        qDebug()<<"gameOver --- new Mino gene failure";
+    }
+
 }
 
 //suo's锁死当前方块
@@ -164,12 +175,8 @@ void Tetromino::paintEvent(QPaintEvent *)
             painter.drawRect((x+dx)*C::WIDTH,(ghostY+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
 
     });
-//    blocks->each([&painter,this](int dx,int dy,bool value){
-//        if(value)
-//            painter.drawRect((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH);
-//    });
     blocks->each([&painter,this](int dx,int dy,bool value){
-        if(value)
+        if(value && y+dy > 19)
             painter.drawPixmap((x+dx)*C::WIDTH,(y+dy)*C::WIDTH,C::WIDTH,C::WIDTH,*MINO_TEXTURE[this->type]);
     });
 }

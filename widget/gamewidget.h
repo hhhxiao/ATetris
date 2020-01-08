@@ -8,6 +8,7 @@
 #include <QVector>
 #include "../config/keypressmanager.h"
 #include "../seq/seq.h"
+#include "../data/stat.h"
 /**游戏WIdget
  * 包含了游戏视图所需要的所有组件
  * - 地图
@@ -32,12 +33,12 @@ private:
     KeyPressManager *keyManager;
     bool keyEnable = false;
     bool hasHold = false;
+    GameStat stat;
 
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
-    void paintEvent(QPaintEvent *);
-
+    void paintEvent(QPaintEvent *) override;
 private slots:
     void enableHold(){this->hasHold = false;}
 
@@ -58,7 +59,7 @@ public slots:
     void rRotate(){mino->rigthRotate();}
     void lRotate(){mino->leftRotate();}
     void hold();
-signals:
+    void statUpdate(int lineClerSinnal);
 
 };
 

@@ -14,9 +14,7 @@
 #include <QTextCodec>
 #include <QFontDatabase>
 
-extern "C"{
-    #include "./ai/coldclear.h"
-}
+
 
 //https://www.bbsmax.com/A/6pdDEAYkzw/
 

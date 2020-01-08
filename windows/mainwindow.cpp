@@ -37,9 +37,11 @@ void MainWindow::on_maraBtn_clicked()
 void MainWindow::on_c4wBtn_clicked()
 {
 
-         ModeBase *base =  new C4wMode();
-         SingleGameWindow *game = new SingleGameWindow(base);
-          game->show();
+    BotBattle *b = new BotBattle();
+    b->show();
+//         ModeBase *base =  new C4wMode();
+//          SingleGameWindow *game = new SingleGameWindow(base);
+//          game->show();
 }
 
 void MainWindow::on_FortyBtn_clicked()

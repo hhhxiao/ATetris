@@ -6,12 +6,13 @@ GameMap::GameMap(QWidget *parent, int width, int height)
     : QWidget(parent),width(width),height(height)
 {
     this->grids = new Grid<int>(width,height,C::EMPTY);
-    //this->setFixedSize(C::WIDTH * 10,C::WIDTH*20);
     this->setGeometry(C::WIDTH*6,C::WIDTH-this->height/2*C::WIDTH,width * C::WIDTH,height*C::WIDTH);
     setMouseTracking(true);
 }
 
 GameMap::GameMap(QWidget *parent):GameMap(parent,C::MAP_WIDTH,C::MAP_HEIGHT){}
+
+
 
 void GameMap::clearLine(int tspin)
 {
@@ -31,36 +32,106 @@ void GameMap::clearLine(int tspin)
         emit ren(continusCombo);
     }
 
+    //这里还有一次死亡判定
+
     if(line > 0){
         if(tspin == C::NO_SPIN){
             emit lineSignal(line);//没有spin直接发射消行信号
+            switch (line) {
+            case 2:
+                emit attack(1);break;
+            case 3:
+                emit attack(2);break;
+            case 4:
+                if(spAttack){
+                    emit attack(5);
+                }else {
+                    spAttack = true;
+                    emit attack(4);
+                }
+                break;
+            }
         }else if(tspin == C::T_SPIN_MINI){
+            spAttack = true;
             emit(lineSignal(C::T_SPIN_MINI));
         }else if(tspin == C::T_SPIN){
-            emit lineSignal(4+line);
+            switch (line) {
+            case 1:
+                if(spAttack){
+                    emit attack(3);
+                }else {
+                    spAttack = true;
+                    emit attack(2);
+                }
+                break;
+            case 2:
+                if(spAttack){
+                    emit attack(5);
+                }else {
+                    spAttack = true;
+                    emit attack(4);
+                }
+                break;
+            case 3:
+                if(spAttack){
+                    emit attack(7);
+                }else {
+                    spAttack = true;
+                    emit attack(6);
+                }
+                break;
+            }
+            emit lineSignal(5+line);
         }
     }
+
+   // addGarbageLine(rand()%4+1);
     this->repaint();
 }
+
 GameMap::~GameMap(){delete grids;}
 
 
+//添加垃圾行算法
+void GameMap::addGarbageLine(int lineNum)
+{
+    static std::default_random_engine e(time(nullptr));
+    static std::uniform_int_distribution<int> u(0,C::MAP_WIDTH-1);
+    int gap = u(e);
+    for(int y = 0;y <C::MAP_HEIGHT; ++y){
+        if(y <C::MAP_HEIGHT - lineNum){
+            for (int x = 0;x < C::MAP_WIDTH;x++) {
+                grids->set(x,y,grids->get(x,y+lineNum));
+            }
+        }else {
+            for(int x = 0;x<C::MAP_WIDTH;x++){
+                grids->set(x,y,x == gap?C::EMPTY:C::GARBAGE);
+            }
+        }
+    }
+    update();
+}
+
+void GameMap::syncMap(bool *map)
+{
+    this->grids->each([map](int dx,int dy,int val){
+        if(dy>=20){
+        map[(39-dy)*20+dx] = val != C::EMPTY;
+        }
+    });
+}
+//paint event
 void GameMap::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-//    QPen pen;
-//    QBrush brush(Qt::SolidPattern);
     this->grids->each([this,&painter](int x,int y,int tetroType){
-//        pen.setColor(C::BLOCK_COLOR_LIST[tetroType]);
-//        brush.setColor(C::BLOCK_COLOR_LIST[tetroType]);
-//        painter.setPen(pen);
-//        painter.setBrush(brush);
         if(y >= this->height/2){
               painter.drawPixmap(x*C::WIDTH,y*C::WIDTH,C::WIDTH,C::WIDTH,*Tetromino::MINO_TEXTURE[tetroType]);
         }
     });
 }
 
+//编辑模式的鼠标事件
 //only dislable cheat
 void GameMap::mousePressEvent(QMouseEvent *e)
 {

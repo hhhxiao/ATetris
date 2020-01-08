@@ -10,6 +10,7 @@
 #include  "./mode/c4wmode.h"
 #include <QLineEdit>
 #include <QMessageBox>
+#include"botbattle.h"
 namespace Ui {
 class MainWindow;
 }
