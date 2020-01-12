@@ -21,10 +21,8 @@ KeyPressManager::KeyPressManager(){
     rDasTimer->setSingleShot(true);
     connect(lDasTimer,SIGNAL(timeout()),this,SLOT(startLarr()));
     connect(rDasTimer,SIGNAL(timeout()),this,SLOT(startRarr()));
-
     connect(lArrTimer,SIGNAL(timeout()),this,SLOT(leftEvent()));
     connect(rArrTimer,SIGNAL(timeout()),this,SLOT(rightEvent()));
-
     connect(dropTimer,SIGNAL(timeout()),this,SLOT(dropEvent()));
 
 }
@@ -75,11 +73,13 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
         }else if(ev->key() == rightMoveKey){
             if(lDasTimer->isActive())
                 lDasTimer->stop();
-            if(lArrTimer->isActive())
-                lArrTimer->stop();
+            if(lArrTimer->isActive()){
+                 lArrTimer->stop();
+            }
                 this->rightEvent();
                 rDasTimer->start(das);
         }else if(ev->key() == hardDropKey){
+                qDebug()<<"hard drop pressed!!";
                 gameWidget->hardrop();
         }else if(ev->key() == leftRotateKey){
                 gameWidget->lRotate();
@@ -116,7 +116,6 @@ void KeyPressManager::keyReleaseHanler(QKeyEvent *ev)
                 dropTimer->stop();
         }
     }
-
 }
 
 void KeyPressManager::wheelEventHandler(QWheelEvent *ev){}

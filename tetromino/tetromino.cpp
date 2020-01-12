@@ -88,6 +88,8 @@ void Tetromino::init()
 
 //suo's锁死当前方块
 void Tetromino::fix(){
+    lifeTimer->stop();
+     qDebug()<<"begin fix";
    int tspinResult =  tspinCheck();
     lastTestNumber = -1;
     this->blocks->each([this](int dx,int dy,bool value){
@@ -95,10 +97,9 @@ void Tetromino::fix(){
             gameMap->setGird(dx+x,dy+y,this->type);
     });
     //tspin mini 辅助判定
+    qDebug()<<"emit death";
     emit death(tspinResult);
 }
-
-
 int Tetromino::tspinCheck()
 {
     //计算是否可移动:
@@ -207,13 +208,14 @@ void Tetromino::moveRight()
 
 //硬降
 void Tetromino::hardDrop(){
+    qDebug()<<"call hardDrop";
     if(!willDeath){
         while(positionValid(*gameMap,*blocks,x,y+1)){
                  ++y;
         }
     }
-    update();
     fix();
+    update();
 }
 
 //右旋
@@ -295,11 +297,11 @@ void Tetromino::drop()
 {
     if(positionValid(*gameMap,*blocks,x,y+1))
     {
-        lastTestNumber = -1;
-        ++y;
+        lastTestNumber = -1; //更新上次的运行状态
+        ++y;//y坐标下移一格
         repaint();
     }else{
-        if(!willDeath){
+        if(!willDeath){//计时器还没开始就启动计时器
             //qDebug()<<"要死了QAQ";
             this->lifeTimer->start(deathDelay);
             this->willDeath = true;
@@ -318,7 +320,6 @@ bool Tetromino::positionValid(const GameMap &map, Grid<bool> &grids,int x,int y)
                     result = false;
                     return;
                 }}
-
         }
     });
     return result;
@@ -343,8 +344,7 @@ void Tetromino::loadTextures()
     MINO_TEXTURE.insert(C::Z_BLOCK,p5);
     MINO_TEXTURE.insert(C::J_BLOCK,p6);
     MINO_TEXTURE.insert(C::L_BLOCK,p7);
-
-    MINO_TEXTURE.insert(C::EMPTY,p8);
+    MINO_TEXTURE.insert(C::EMPTY,  p8);
     MINO_TEXTURE.insert(C::GARBAGE,p9);
 }
 

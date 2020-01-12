@@ -7,21 +7,20 @@ BotBattle::BotBattle(QWidget *parent) :
 {
     ui->setupUi(this);
     SeqBase *seq1 = new SevenBagSeq();
-    SeqBase *Seq2 = new SevenBagSeq(121212);
-    SeqBase *Seq3 = new SevenBagSeq(121212);
+    SeqBase *Seq2 = new RepeatSeq({C::I_BLOCK,C::T_BLOCK,C::L_BLOCK,
+                                   C::J_BLOCK,C::S_BLOCK,C::Z_BLOCK,C::O_BLOCK});
     playerWidget = new GameWidget(seq1,this);
     botWidget = new GameWidget(Seq2,this);
     botWidget->move(25*C::WIDTH,2*C::WIDTH);
     playerWidget->setFocus();
-    bot = new CCBot(botWidget->getGameMap(),Seq3);
     //connect(playerWidget->getGameMap(),SIGNAL(attack(int)),botWidget->getGameMap(),SLOT(addGarbageLine(int)));
+    //init bot
+    this->ccbot = new CCBot(botWidget->getGameMap(),seq1);
     botTimer = new QTimer(this);
-    move = bot->getNextMove();
-
     connect(this->botTimer,SIGNAL(timeout()),this,SLOT(botMove()));
-    botTimer->start(300);
-}
+    botTimer->start(200);
 
+}
 BotBattle::~BotBattle()
 {
     delete ui;
@@ -29,12 +28,17 @@ BotBattle::~BotBattle()
 
 void BotBattle::botMove()
 {
-    if(moveStep ==32){
-        moveStep = 0;
-    move = bot->getNextMove();
-        }//debug
-
-    switch (move.movements[moveStep]) {
+    if(this->moveStep == 0 || this->moveStep == 127){
+        this->move = ccbot->getNext();
+        if(move.movement_count == 127){
+             qDebug()<<"Widget req failure";
+            return;
+        }else {
+            this->moveStep = move.movement_count;
+            }
+    }
+    qDebug()<<"move Step is "<<moveStep;
+    switch (move.movements[move.movement_count-moveStep]) {
     case CC_LEFT:
         botWidget->moveLeft();
         qDebug()<<"bot move left";
@@ -56,6 +60,11 @@ void BotBattle::botMove()
     qDebug()<<"bot move drop";
         break;
     }
+    if(moveStep == 1){
+        botWidget->hardrop();
+    }
     botWidget->repaint();
-    ++moveStep;
+    --moveStep;
 }
+
+

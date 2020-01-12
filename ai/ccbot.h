@@ -1,23 +1,28 @@
 #ifndef CCBOT_H
 #define CCBOT_H
+
+#include <QObject>
 #include "../tetromino/tetro.h"
+#include "../seq/seq.h"
 extern "C"{
     #include "./ai/coldclear.h"
 }
-#include "../seq/seq.h"
 class CCBot
 {
 private:
-    CCAsyncBot *bot;
-    CCOptions options;
-    CCWeights weights;
+    CCAsyncBot *ccbot;
+    CCOptions *options;
+    CCWeights *weights;
+    SeqBase *sequence;
     GameMap *map;
-    SeqBase *seq;
     bool filed[400];
-public:
     static QMap<int,CCPiece> minoAdapterList;
-    CCBot(GameMap *map,SeqBase *base);
-    CCMove getNextMove();
+public:
+    CCMove getNext();
+    void syncMap();
+    explicit CCBot(GameMap*map, SeqBase *seq);
+signals:
+
 };
 
 #endif // CCBOT_H

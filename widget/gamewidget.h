@@ -60,7 +60,6 @@ public slots:
     void lRotate(){mino->leftRotate();}
     void hold();
     void statUpdate(int lineClerSinnal);
-
 };
 
 #endif // GAMEWIDGET_H

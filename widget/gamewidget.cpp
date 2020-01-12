@@ -29,10 +29,11 @@ GameWidget::GameWidget(SeqBase *seqBase,QWidget *parent) : QWidget(parent)
     keyManager->setGameWidget(this);
     geneNewMino();
 
-    connect(mino,SIGNAL(death(int)),this,SLOT(geneNewMino()));
+
     connect(mino,SIGNAL(death(int)),gameMap,SLOT(clearLine(int)));
     connect(mino,SIGNAL(death(int)),this,SLOT(enableHold()));
     connect(gameMap,SIGNAL(lineSignal(int)),this,SLOT(statUpdate(int)));
+    connect(gameMap,SIGNAL(lineSignal(int)),this,SLOT(geneNewMino()));
 }
 
 void GameWidget::hold()
@@ -113,12 +114,14 @@ const QMap<int,QString> C::LINE_CLEAR_TYPE = {
         stat.addTst();break;
     case 11:
         stat.addTsm();break;
+    default:break;
     }
     update();
 }
 
 void GameWidget::geneNewMino()
 {
+    qDebug()<<"geneNewMino";
     mino->reset(nextWindows[0]->getType());
     int size = nextWindows.size();
     for(int i = 0;i<size-1;i++)

@@ -16,6 +16,7 @@ GameMap::GameMap(QWidget *parent):GameMap(parent,C::MAP_WIDTH,C::MAP_HEIGHT){}
 
 void GameMap::clearLine(int tspin)
 {
+    qDebug()<<"begin clearLine";
     int line =  this->grids->deleteLine([](const QVector<int> &vector){
         for(auto i :vector){
             if(i == C::EMPTY)
@@ -84,8 +85,8 @@ void GameMap::clearLine(int tspin)
             emit lineSignal(5+line);
         }
     }
-
-   // addGarbageLine(rand()%4+1);
+    emit lineSignal(0);
+    qDebug()<<"clearLine finish";
     this->repaint();
 }
 

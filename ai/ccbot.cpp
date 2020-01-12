@@ -1,31 +1,38 @@
 #include "ccbot.h"
 
-
-CCBot::CCBot(GameMap *map,SeqBase *base)
-   :map(map),seq(base)
+CCBot::CCBot(GameMap*map,SeqBase *base):
+    sequence(base)
+    ,map(map)
 {
-    cc_default_options(&options);
-    cc_default_weights(&weights);
-    map->syncMap(this->filed);
-    this->bot = cc_launch_async(&options,&weights);
-    cc_reset_async(bot,filed,false,0);
-    for(int i = 0;i<7;i++){
-        cc_add_next_piece_async(this->bot,minoAdapterList[seq->getNext()]);
+    this->options = new CCOptions;
+    this->weights = new CCWeights;
+    this->ccbot = cc_launch_async(options,weights);
+    syncMap();
+    cc_reset_async(ccbot,filed,true,0);
+    for(int i = 0;i < 5 ; ++i){
+        for(int j = 1;j<=7;j++){
+            cc_add_next_piece_async(ccbot,minoAdapterList[j]);
+        }
     }
-
+    cc_request_next_move(ccbot);
 }
 
-CCMove CCBot::getNextMove()
+CCMove CCBot::getNext()
 {
-    CCMove move;
-    cc_request_next_move(bot);
-    while(!cc_poll_next_move(bot,&move)){
-         qDebug()<<"try Next Move";
+    CCMove m;
+    m.movement_count = 127;
+    if(cc_poll_next_move(ccbot,&m)){
+        qDebug()<<"req success";
+        cc_request_next_move(ccbot);
     }
-        cc_add_next_piece_async(this->bot,minoAdapterList[seq->getNext()]);
-        qDebug()<<"can not get Next Move";
-       return  move;
+    return  m;
+}
 
+
+
+void CCBot::syncMap()
+{
+    map->syncMap(this->filed);
 }
 
 QMap<int,CCPiece> CCBot::minoAdapterList = {

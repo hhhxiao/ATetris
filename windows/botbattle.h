@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include "../widget/gamewidget.h"
 #include "../mode/fortymode.h"
-#include "../ai/ccbot.h"
+#include <deque>
 #include <QTimer>
+#include <cstdint>
+#include "../ai/ccbot.h"
 namespace Ui {
 class BotBattle;
 }
@@ -20,10 +22,12 @@ public:
 private:
     Ui::BotBattle *ui;
     GameWidget *playerWidget,*botWidget;
-    CCBot *bot;
     QTimer *botTimer;
     CCMove move;
-    int moveStep = 0;
+    uint8_t moveStep = 0;
+    CCBot *ccbot;
+   //bot:
+
 private slots:
     void botMove();
 
