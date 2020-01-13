@@ -35,6 +35,7 @@ private:
     bool hasHold = false;
     GameStat stat;
 
+
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;

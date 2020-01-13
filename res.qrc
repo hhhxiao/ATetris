@@ -33,4 +33,7 @@
         <file>style/sub-line_horizontal.png</file>
         <file>style/sub-line_vertical.png</file>
     </qresource>
+    <qresource prefix="/particle">
+        <file>theme/test.qml</file>
+    </qresource>
 </RCC>

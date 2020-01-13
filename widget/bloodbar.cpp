@@ -12,5 +12,5 @@ void BloodBar::paintEvent(QPaintEvent *)
     QBrush b(Qt::red);
     b.setStyle(Qt::SolidPattern);
     p.setBrush(b);
-    p.drawRect(0,C::WIDTH*((1-this->val)*C::MAP_HEIGHT/2),C::WIDTH/2,(C::MAP_HEIGHT/2)*C::WIDTH);
+    p.drawRect(0,C::WIDTH*((1-this->val)*C::MAP_HEIGHT/2),C::WIDTH/2,val *(C::MAP_HEIGHT/2)*C::WIDTH);
 }

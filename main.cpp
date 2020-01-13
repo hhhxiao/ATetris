@@ -48,15 +48,6 @@ QString readQss(const QString fileName){
     return "";
 }
 
-//class TestClass: public QObject
-//{
-//private:
-//    QTimer *timer;
-//    CCBot *bot;
-//    GameMap *map;
-//    SeqBase *seq;
-//};
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

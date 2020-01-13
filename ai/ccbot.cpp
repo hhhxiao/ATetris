@@ -4,8 +4,9 @@ CCBot::CCBot(GameMap*map,SeqBase *base):
     sequence(base)
     ,map(map)
 {
-    this->options = new CCOptions;
-    this->weights = new CCWeights;
+    this->options = new CCOptions();
+    this->weights = new CCWeights();
+    weights->clear4 = 0;
     this->ccbot = cc_launch_async(options,weights);
     syncMap();
     cc_reset_async(ccbot,filed,true,0);

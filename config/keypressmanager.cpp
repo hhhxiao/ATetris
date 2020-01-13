@@ -67,7 +67,6 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
                     rDasTimer->stop();
                 if(rArrTimer->isActive())
                     rArrTimer->stop();
-
                 this->leftEvent();
                 lDasTimer->start(das);
         }else if(ev->key() == rightMoveKey){

@@ -8,6 +8,10 @@
 #include <QtDebug>
 #include<QMouseEvent>
 #include <random>
+#include <QtQuick/QQuickView>
+#include <QtQuickWidgets/QQuickWidget>
+#include <QHBoxLayout>
+
 class GameMap : public QWidget
 {
     Q_OBJECT
@@ -20,6 +24,8 @@ protected:
        QPoint endPoint;
        bool spAttack;
        int continusCombo = 0;
+       QQuickWidget *particleWidget;
+
 public:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent * e);

@@ -1,4 +1,5 @@
 QT       += core gui
+QT += quickwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,6 +29,7 @@ SOURCES += \
     config/keypressmanager.cpp \
     config/settingsmanager.cpp \
     main.cpp \
+    widget/particlewidget.cpp \
     windows/botbattle.cpp \
     windows/gameoverdialog.cpp \
     windows/mainwindow.cpp \
@@ -52,6 +54,7 @@ HEADERS += \
     widget/bloodbar.h \
     widget/gamewidget.h \
     widget/nextwindow.h\
+    widget/particlewidget.h \
     windows/botbattle.h \
     windows/gameoverdialog.h \
     windows/mainwindow.h \

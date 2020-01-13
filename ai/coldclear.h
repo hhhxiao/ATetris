@@ -31,6 +31,7 @@ typedef struct CCMove {
     uint8_t movement_count;
     /* Movements */
     CCMovement movements[32];
+
     /* Bot Info */
     uint32_t nodes;
     uint32_t depth;

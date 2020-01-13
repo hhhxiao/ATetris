@@ -6,7 +6,21 @@ GameMap::GameMap(QWidget *parent, int width, int height)
     : QWidget(parent),width(width),height(height)
 {
     this->grids = new Grid<int>(width,height,C::EMPTY);
+
+
+
+
+   // this->layout()->addWidget(particleWidget);
+//    horlayout = new QHBoxLayout(this);
+//       horlayout->setContentsMargins(10, 10, 10, 10);
+//       horlayout->addWidget(particleWidget);
+//   particleWidget->show();
     this->setGeometry(C::WIDTH*6,C::WIDTH-this->height/2*C::WIDTH,width * C::WIDTH,height*C::WIDTH);
+    this->particleWidget = new QQuickWidget(this);
+    particleWidget->setSource(QUrl::fromLocalFile(":/particle/theme/test.qml"));
+    particleWidget->setFixedSize(this->size());
+    particleWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+   // particleWidget->move(100,1000);
     setMouseTracking(true);
 }
 
@@ -155,6 +169,7 @@ void GameMap::mousePressEvent(QMouseEvent *e)
 //only dislable cheat
 void GameMap::mouseMoveEvent(QMouseEvent *e)
 {
+    this->particleWidget->setFocus();
 
     if(e->buttons()&Qt::LeftButton && editAble){
         int grid_x = e->pos().x() / C::WIDTH;

@@ -18,7 +18,7 @@ BotBattle::BotBattle(QWidget *parent) :
     this->ccbot = new CCBot(botWidget->getGameMap(),seq1);
     botTimer = new QTimer(this);
     connect(this->botTimer,SIGNAL(timeout()),this,SLOT(botMove()));
-    botTimer->start(200);
+    botTimer->start(1000);
 
 }
 BotBattle::~BotBattle()
