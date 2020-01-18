@@ -1,6 +1,6 @@
 #include "particlewidget.h"
 
-particleWidget::particleWidget()
+particleWidget::particleWidget(QWidget *parent):QQuickWidget(parent)
 {
-
+    this->setSource(QUrl::fromLocalFile(":/particle/theme/test.qml"));
 }

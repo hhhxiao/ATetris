@@ -1,11 +1,11 @@
 #ifndef PARTICLEWIDGET_H
 #define PARTICLEWIDGET_H
 
-
-class particleWidget
+#include <QtQuickWidgets>
+class particleWidget:public QQuickWidget
 {
 public:
-    particleWidget();
+    particleWidget(QWidget *parent);
 };
 
 #endif // PARTICLEWIDGET_H

@@ -7,6 +7,7 @@ Tetromino::Tetromino(int type,GameMap *map,QWidget *parent)
     connect(lifeTimer,SIGNAL(timeout()),SLOT(fix()));
     this->init();
     this->setFixedSize(map->getWidth() * C::WIDTH,map->getHeight()*C::WIDTH);
+    this->bells = new QSound("./sounds/lock.wav");
 }
 
 
@@ -96,6 +97,7 @@ void Tetromino::fix(){
         if(value)
             gameMap->setGird(dx+x,dy+y,this->type);
     });
+    bells->play();
     //tspin mini 辅助判定
     qDebug()<<"emit death";
     emit death(tspinResult);
@@ -192,6 +194,8 @@ void Tetromino::moveLeft()
         repaint();
     }
 
+
+
 }
 
 //右移
@@ -216,6 +220,7 @@ void Tetromino::hardDrop(){
     }
     fix();
     update();
+
 }
 
 //右旋
@@ -240,7 +245,7 @@ void Tetromino::leftRotate()
 
     auto pair = this->rotateTest(C::CLOCK_ANTI_WISE);
     if(pair.first == -1)return;
-    relive();
+     relive();
     // tspinCheck(pair.first,pair.second,C::CLOCK_WISE);
     this->blocks->antiRotation();
     this->x += pair.second.x();
@@ -295,6 +300,7 @@ QVector<QPoint> Tetromino::readPoint(int rotationAngle)
 
 void Tetromino::drop()
 {
+
     if(positionValid(*gameMap,*blocks,x,y+1))
     {
         lastTestNumber = -1; //更新上次的运行状态

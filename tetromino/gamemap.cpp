@@ -6,21 +6,11 @@ GameMap::GameMap(QWidget *parent, int width, int height)
     : QWidget(parent),width(width),height(height)
 {
     this->grids = new Grid<int>(width,height,C::EMPTY);
-
-
-
-
-   // this->layout()->addWidget(particleWidget);
-//    horlayout = new QHBoxLayout(this);
-//       horlayout->setContentsMargins(10, 10, 10, 10);
-//       horlayout->addWidget(particleWidget);
-//   particleWidget->show();
     this->setGeometry(C::WIDTH*6,C::WIDTH-this->height/2*C::WIDTH,width * C::WIDTH,height*C::WIDTH);
-    this->particleWidget = new QQuickWidget(this);
-    particleWidget->setSource(QUrl::fromLocalFile(":/particle/theme/test.qml"));
-    particleWidget->setFixedSize(this->size());
-    particleWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
-   // particleWidget->move(100,1000);
+//    this->particleWidget = new QQuickWidget(QUrl::fromLocalFile(":/particle/theme/test.qml"),this);
+//    particleWidget->setFixedSize(this->size());
+//    particleWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+//    particleWidget->setWindowOpacity(0.5);
     setMouseTracking(true);
 }
 

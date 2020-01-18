@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QWidget>
 #include "settingsmanager.h"
+#include <QSound>
 
 //这里的按键检测代码能简化
 
@@ -31,6 +32,8 @@ private:
     int holdKey = Qt::Key_Shift;
     int softDropKey = Qt::Key_Down;
     int hardDropKey = Qt::Key_Space;
+    QSound *moveSound;
+    QSound *rotateSound;
 
 public:
 

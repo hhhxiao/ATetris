@@ -1,9 +1,10 @@
 #include "keypressmanager.h"
 #include "../widget/gamewidget.h"
-
 void KeyPressManager::setGameWidget(GameWidget *widget)
 {
     this->gameWidget = widget;
+    moveSound = new QSound("./sounds/move.wav");
+    rotateSound = new QSound("./sounds/rotate.wav");
     loadSettings();
 }
 
@@ -63,6 +64,7 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
                 this->dropEvent();
                 dropTimer->start(dropArr);
         }else if(ev->key() == leftMoveKey){
+                moveSound->play();
                 if(rDasTimer->isActive())
                     rDasTimer->stop();
                 if(rArrTimer->isActive())
@@ -70,6 +72,7 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
                 this->leftEvent();
                 lDasTimer->start(das);
         }else if(ev->key() == rightMoveKey){
+            moveSound->play();
             if(lDasTimer->isActive())
                 lDasTimer->stop();
             if(lArrTimer->isActive()){
@@ -81,8 +84,10 @@ void KeyPressManager::keyPressHandler(QKeyEvent *ev)
                 qDebug()<<"hard drop pressed!!";
                 gameWidget->hardrop();
         }else if(ev->key() == leftRotateKey){
+                rotateSound->play();
                 gameWidget->lRotate();
         }else if(ev->key() == rightRotateKey){
+                rotateSound->play();
                 gameWidget->rRotate();
         }
         //else if(ev->key() == this->pauseDropTimer) {

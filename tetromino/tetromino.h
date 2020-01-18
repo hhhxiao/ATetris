@@ -1,6 +1,6 @@
 #ifndef TETROMINO_H
 #define TETROMINO_H
-
+#include<QSound>
 #include <QWidget>
 #include "../data/grid.h"
 #include "c.h"
@@ -26,6 +26,7 @@ protected:
     int state = C::DIR_0;
     GameMap *gameMap;
     QPixmap *pixmap;
+    QSound *bells;
     int x = 0;
     int y = 19;
     Grid<bool> *blocks;
